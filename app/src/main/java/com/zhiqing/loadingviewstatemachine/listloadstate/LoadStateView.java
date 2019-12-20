@@ -232,10 +232,16 @@ public class LoadStateView extends FrameLayout {
 
         private void showLoading() {
             loadingViewRoot.setVisibility(VISIBLE);
+            if (loadingLottieView != null) {
+                loadingLottieView.playAnimation();
+            }
         }
 
         private void hideLoading() {
             loadingViewRoot.setVisibility(GONE);
+            if (loadingLottieView != null) {
+                loadingLottieView.cancelAnimation();
+            }
         }
     }
 
