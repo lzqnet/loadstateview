@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr format="float" name="backgroundAlpha"/>
+    <attr format="float" name="button_disable_color_alpha"/>
+    <attr format="float" name="button_normal_color_alpha"/>
+    <attr format="float" name="button_pressed_color_alpha"/>
+    <attr format="float" name="button_stroke_color_alpha"/>
+    <attr format="float" name="centerColorAlpha"/>
+    <attr format="float" name="endColorAlpha"/>
+    <attr format="float" name="foregroundAlpha"/>
+    <attr format="float" name="startColorAlpha"/>
+    <attr format="float" name="textColorAlpha"/>
+    <color name="lkui_B100">#E1EAFF</color>
+    <color name="lkui_B200">#BACEFD</color>
+    <color name="lkui_B300">#82A7FC</color>
+    <color name="lkui_B400">#4E83FD</color>
+    <color name="lkui_B50">#F0F4FF</color>
+    <color name="lkui_B500">#3370FF</color>
+    <color name="lkui_B600">#245BDB</color>
+    <color name="lkui_B700">#1C4CBA</color>
+    <color name="lkui_B800">#133C9A</color>
+    <color name="lkui_B900">#0C296E</color>
+    <color name="lkui_C100">#FDDDEF</color>
+    <color name="lkui_C200">#F9AED9</color>
+    <color name="lkui_C300">#F57AC0</color>
+    <color name="lkui_C400">#F14BA9</color>
+    <color name="lkui_C50">#FEF1F8</color>
+    <color name="lkui_C500">#F01D94</color>
+    <color name="lkui_C600">#C71077</color>
+    <color name="lkui_C700">#9E1361</color>
+    <color name="lkui_C800">#7A0F4B</color>
+    <color name="lkui_C900">#520A32</color>
+    <color name="lkui_G100">#D9F5D6</color>
+    <color name="lkui_G200">#B7EDB1</color>
+    <color name="lkui_G300">#8EE085</color>
+    <color name="lkui_G400">#62D256</color>
+    <color name="lkui_G50">#F0FBEF</color>
+    <color name="lkui_G500">#34C724</color>
+    <color name="lkui_G600">#2EA121</color>
+    <color name="lkui_G700">#237B19</color>
+    <color name="lkui_G800">#186010</color>
+    <color name="lkui_G900">#124B0C</color>
+    <color name="lkui_I100">#E0E2FA</color>
+    <color name="lkui_I200">#B4B9F3</color>
+    <color name="lkui_I300">#7B83EA</color>
+    <color name="lkui_I400">#616AE5</color>
+    <color name="lkui_I50">#F2F3FD</color>
+    <color name="lkui_I500">#4954E6</color>
+    <color name="lkui_I600">#2933C7</color>
+    <color name="lkui_I700">#161FA2</color>
+    <color name="lkui_I800">#0A1285</color>
+    <color name="lkui_I900">#0C1264</color>
+    <color name="lkui_L100">#EEF6C6</color>
+    <color name="lkui_L200">#DFEE96</color>
+    <color name="lkui_L300">#D2E76A</color>
+    <color name="lkui_L400">#C3DD40</color>
+    <color name="lkui_L50">#F7FAE5</color>
+    <color name="lkui_L500">#B3D600</color>
+    <color name="lkui_L600">#8FAC02</color>
+    <color name="lkui_L700">#667901</color>
+    <color name="lkui_L800">#495700</color>
+    <color name="lkui_L900">#354200</color>
+    <color name="lkui_N00">#FFFFFF</color>
+    <color name="lkui_N100">#F5F6F7</color>
+    <color name="lkui_N1000">#000000</color>
+    <color name="lkui_N200">#EFF0F1</color>
+    <color name="lkui_N300">#DEE0E3</color>
+    <color name="lkui_N400">#BBBFC4</color>
+    <color name="lkui_N50">#F8F9FA</color>
+    <color name="lkui_N500">#8F959E</color>
+    <color name="lkui_N600">#646A73</color>
+    <color name="lkui_N650">#51565D</color>
+    <color name="lkui_N700">#373C43</color>
+    <color name="lkui_N800">#2B2F36</color>
+    <color name="lkui_N900">#1F2329</color>
+    <color name="lkui_N950">#0F1114</color>
+    <color name="lkui_O100">#FEEAD2</color>
+    <color name="lkui_O200">#FED4A4</color>
+    <color name="lkui_O300">#FFBA6B</color>
+    <color name="lkui_O400">#FFA53D</color>
+    <color name="lkui_O50">#FFF5EB</color>
+    <color name="lkui_O500">#FF8800</color>
+    <color name="lkui_O600">#DE7802</color>
+    <color name="lkui_O700">#B26206</color>
+    <color name="lkui_O800">#8F4F04</color>
+    <color name="lkui_O900">#6B3900</color>
+    <color name="lkui_P100">#ECE2FE</color>
+    <color name="lkui_P200">#CDB2FA</color>
+    <color name="lkui_P300">#AD82F7</color>
+    <color name="lkui_P400">#935AF6</color>
+    <color name="lkui_P50">#F6F1FE</color>
+    <color name="lkui_P500">#7F3BF5</color>
+    <color name="lkui_P600">#6425D0</color>
+    <color name="lkui_P700">#4E1BA7</color>
+    <color name="lkui_P800">#380D82</color>
+    <color name="lkui_P900">#270561</color>
+    <color name="lkui_R100">#FDE2E2</color>
+    <color name="lkui_R200">#FBBFBC</color>
+    <color name="lkui_R300">#F98E8B</color>
+    <color name="lkui_R400">#F76964</color>
+    <color name="lkui_R50">#FEF1F1</color>
+    <color name="lkui_R500">#F54A45</color>
+    <color name="lkui_R600">#D83931</color>
+    <color name="lkui_R700">#AC2F28</color>
+    <color name="lkui_R800">#812520</color>
+    <color name="lkui_R900">#621C18</color>
+    <color name="lkui_T100">#D5F6F2</color>
+    <color name="lkui_T200">#A9EFE6</color>
+    <color name="lkui_T300">#64E8D6</color>
+    <color name="lkui_T400">#14E1C6</color>
+    <color name="lkui_T50">#EAFAF8</color>
+    <color name="lkui_T500">#00D6B9</color>
+    <color name="lkui_T600">#04B49C</color>
+    <color name="lkui_T700">#078372</color>
+    <color name="lkui_T800">#036356</color>
+    <color name="lkui_T900">#024B41</color>
+    <color name="lkui_V100">#F8DEF8</color>
+    <color name="lkui_V200">#EFB9EF</color>
+    <color name="lkui_V300">#E58FE5</color>
+    <color name="lkui_V400">#DB66DB</color>
+    <color name="lkui_V50">#FCEEFC</color>
+    <color name="lkui_V500">#D136D1</color>
+    <color name="lkui_V600">#B320B3</color>
+    <color name="lkui_V700">#8C218C</color>
+    <color name="lkui_V800">#681268</color>
+    <color name="lkui_V900">#460B46</color>
+    <color name="lkui_W100">#D9F3FD</color>
+    <color name="lkui_W200">#B1E8FC</color>
+    <color name="lkui_W300">#7EDAFB</color>
+    <color name="lkui_W400">#50CEFB</color>
+    <color name="lkui_W50">#ECF9FE</color>
+    <color name="lkui_W500">#14C0FF</color>
+    <color name="lkui_W600">#049FD7</color>
+    <color name="lkui_W700">#037EAA</color>
+    <color name="lkui_W800">#006185</color>
+    <color name="lkui_W900">#004761</color>
+    <color name="lkui_Y100">#FAF1D1</color>
+    <color name="lkui_Y200">#F8E6AB</color>
+    <color name="lkui_Y300">#F7DC82</color>
+    <color name="lkui_Y400">#FAD355</color>
+    <color name="lkui_Y50">#FDF9ED</color>
+    <color name="lkui_Y500">#FFC60A</color>
+    <color name="lkui_Y600">#DC9B04</color>
+    <color name="lkui_Y700">#AA7803</color>
+    <color name="lkui_Y800">#795101</color>
+    <color name="lkui_Y900">#5C3A00</color>
+    <color name="lkui_transparent">#00000000</color>
+    <declare-styleable name="LKUIBadgeView"><attr format="reference" name="badgeBackground"/><attr format="dimension" name="badgeRadius"/><attr format="string" name="text"/><attr format="color" name="textColor"/><attr format="dimension" name="textSize"/><attr format="reference" name="badgeIcon"/><attr format="dimension" name="badgePadding"/></declare-styleable>
+    <declare-styleable name="LKUIButton"><attr name="button_style">
+            <enum name="none" value="1"/>
+            <enum name="large_blue" value="1"/>
+            <enum name="large_light" value="2"/>
+            <enum name="large_grey" value="3"/>
+            <enum name="normal_blue" value="4"/>
+            <enum name="normal_light_blue_border" value="5"/>
+            <enum name="normal_light_grey_border" value="6"/>
+            <enum name="normal_grey" value="7"/>
+        </attr><attr format="color" name="button_normal_color"/><attr format="color" name="button_pressed_color"/><attr format="color" name="button_disable_color"/><attr format="dimension" name="button_corner_radius"/><attr format="color" name="button_stroke_color"/><attr format="dimension" name="button_stroke_width"/></declare-styleable>
+    <declare-styleable name="LKUICheckBox"><attr format="boolean" name="radio"/></declare-styleable>
+    <declare-styleable name="LKUIClearEditText"><attr format="reference" name="clear_drawable"/><attr format="dimension" name="clear_size"/></declare-styleable>
+    <declare-styleable name="LKUIFirstLevelNavigationBar"><attr format="string" name="first_level_navigation_title"/><attr format="color" name="first_level_title_textColor"/><attr format="dimension" name="first_level_title_textSize"/><attr format="reference" name="first_level_navigation_left_drawable"/><attr format="reference" name="first_level_navigation_right_drawable1"/><attr format="reference" name="first_level_navigation_right_drawable2"/><attr format="reference" name="first_level_navigation_right_drawable3"/><attr format="reference" name="first_level_navigation_right_drawable4"/></declare-styleable>
+    <declare-styleable name="LKUIGridNavigationBar"><attr format="color" name="grid_navigation_textColor"/><attr format="dimension" name="grid_navigation_textSize"/><attr format="dimension" name="grid_navigation_image_width"/><attr format="dimension" name="grid_navigation_image_height"/></declare-styleable>
+    <declare-styleable name="LKUINormalWarnToast"><attr name="wt_type">
+            <enum name="error" value="0"/>
+            <enum name="warn" value="1"/>
+            <enum name="Lark_Legacy_Setting" value="2"/>
+            <enum name="success" value="3"/>
+        </attr><attr format="reference" name="wt_icon"/><attr format="string" name="wt_texts"/></declare-styleable>
+    <declare-styleable name="LKUIRadioButton"><attr format="boolean" name="checkStyle"/></declare-styleable>
+    <declare-styleable name="LKUIRoundableLayout"><attr format="dimension" name="rl_radius"/><attr format="dimension" name="rl_radius_left_top"/><attr format="dimension" name="rl_radius_right_top"/><attr format="dimension" name="rl_radius_left_bottom"/><attr format="dimension" name="rl_radius_right_bottom"/><attr format="dimension" name="rl_border_width"/><attr format="color" name="rl_border_color"/><attr format="enum" name="rl_border_mode">
+            <enum name="overlay" value="0"/>
+            <enum name="inset" value="1"/>
+        </attr></declare-styleable>
+    <declare-styleable name="LKUIRoundedImageView"><attr format="dimension" name="civ_border_width"/><attr format="color" name="civ_border_color"/><attr format="dimension" name="civ_border_padding"/><attr format="reference" name="civ_border_drawable"/><attr format="reference" name="civ_badge_background"/><attr format="dimension" name="civ_badge_padding"/><attr format="dimension" name="civ_badge_min_size"/><attr format="reference" name="civ_badge_icon"/><attr format="string" name="civ_badge_text"/><attr format="dimension" name="civ_badge_text_size"/><attr format="color" name="civ_badge_text_color"/><attr format="boolean" name="civ_touch_select_enable"/><attr format="color" name="civ_selected_board_color"/><attr format="color" name="civ_selected_mask_color"/><attr format="boolean" name="civ_oval"/><attr format="dimension" name="civ_radius"/><attr format="dimension" name="civ_radius_left_top"/><attr format="dimension" name="civ_radius_right_top"/><attr format="dimension" name="civ_radius_right_bottom"/><attr format="dimension" name="civ_radius_left_bottom"/><attr format="integer" name="civ_badge_position_angle"/></declare-styleable>
+    <declare-styleable name="LKUISearchView"><attr format="color" name="search_hint_textColor"/><attr format="dimension" name="search_textSize"/><attr format="color" name="search_textColor"/><attr format="boolean" name="search_back_enabled"/><attr format="boolean" name="search_cancel_enabled"/><attr format="dimension" name="search_cancel_textSize"/><attr format="color" name="search_cancel_textColor"/><attr format="string" name="search_cancel_text"/><attr format="color" name="search_edit_text_cursorColor"/><attr format="reference" name="search_left_drawable"/><attr format="dimension" name="search_left_drawable_width"/><attr format="dimension" name="search_left_drawable_height"/><attr format="reference" name="search_right_drawable"/><attr format="dimension" name="search_right_drawable_width"/><attr format="dimension" name="search_right_drawable_height"/><attr format="boolean" name="search_right_drawable_enabled"/><attr format="reference" name="search_clear_drawable"/><attr format="boolean" name="search_clear_enabled"/><attr format="color" name="search_input_background_color"/><attr format="reference" name="search_input_background"/><attr format="string" name="search_hint_text"/><attr format="enum" name="search_search_icon_gravity">
+            <enum name="left" value="0"/>
+            <enum name="center" value="1"/>
+        </attr></declare-styleable>
+    <declare-styleable name="LKUIStandardNavigationBar"><attr format="string" name="standard_navigation_title"/><attr format="color" name="standard_title_textColor"/><attr format="dimension" name="standard_title_textSize"/><attr format="reference" name="standard_navigation_left_drawable1"/><attr format="reference" name="standard_navigation_left_drawable2"/><attr format="reference" name="standard_navigation_right_drawable1"/><attr format="reference" name="standard_navigation_right_drawable2"/><attr format="string" name="standard_navigation_right_text"/><attr format="color" name="standard_right_textColor"/><attr format="dimension" name="standard_right_textSize"/><attr format="enum" name="standard_right_style">
+            <enum name="icon" value="0"/>
+            <enum name="text" value="1"/>
+        </attr></declare-styleable>
+    <declare-styleable name="LKUISwitchButton"><attr format="reference" name="kswThumbDrawable"/><attr format="color|reference" name="kswThumbColor"/><attr format="dimension|reference" name="kswThumbMargin"/><attr format="dimension|reference" name="kswThumbMarginTop"/><attr format="dimension|reference" name="kswThumbMarginBottom"/><attr format="dimension|reference" name="kswThumbMarginLeft"/><attr format="dimension|reference" name="kswThumbMarginRight"/><attr format="dimension|reference" name="kswThumbWidth"/><attr format="dimension|reference" name="kswThumbHeight"/><attr format="dimension|reference" name="kswThumbRadius"/><attr format="dimension|reference" name="kswBackRadius"/><attr format="reference" name="kswBackDrawable"/><attr format="color|reference" name="kswBackColor"/><attr format="boolean" name="kswFadeBack"/><attr format="float" name="kswBackMeasureRatio"/><attr format="integer" name="kswAnimationDuration"/><attr format="color|reference" name="kswTintColor"/><attr format="string" name="kswTextOn"/><attr format="string" name="kswTextOff"/><attr format="dimension" name="kswTextMarginH"/><attr format="boolean" name="kswAutoAdjustTextPosition"/></declare-styleable>
+    <dimen name="ksw_md_thumb_ripple_size">42dp</dimen>
+    <dimen name="ksw_md_thumb_shadow_inset">11dp</dimen>
+    <dimen name="ksw_md_thumb_shadow_inset_bottom">10dp</dimen>
+    <dimen name="ksw_md_thumb_shadow_inset_top">11dp</dimen>
+    <dimen name="ksw_md_thumb_shadow_offset">2dp</dimen>
+    <dimen name="ksw_md_thumb_shadow_size">21dp</dimen>
+    <dimen name="ksw_md_thumb_solid_inset">11dp</dimen>
+    <dimen name="ksw_md_thumb_solid_size">20dp</dimen>
+    <dimen name="lkui_button_text_size_14">14dp</dimen>
+    <dimen name="lkui_button_text_size_17">17dp</dimen>
+    <dimen name="lkui_menu_divider_default_height">1px</dimen>
+    <dimen name="lkui_menu_item_default_height">66dp</dimen>
+    <dimen name="lkui_navigation_default_height">44dp</dimen>
+    <dimen name="lkui_searchview_default_height">32dp</dimen>
+    <dimen name="lkui_toast_side_margin">40dp</dimen>
+    <dimen name="lkui_toast_side_padding">20dp</dimen>
+    <item name="lkui_dialog_bootom_sheet_outside_holder" type="id"/>
+    <item name="lkui_dialog_bootom_sheet_peek" type="id"/>
+    <item name="lkui_dialog_btn_cancel" type="id"/>
+    <item name="lkui_dialog_btn_center" type="id"/>
+    <item name="lkui_dialog_btn_left" type="id"/>
+    <item name="lkui_dialog_btn_right" type="id"/>
+    <item name="lkui_dialog_content_container" type="id"/>
+    <item name="lkui_dialog_content_item_cb" type="id"/>
+    <item name="lkui_dialog_content_item_iv" type="id"/>
+    <item name="lkui_dialog_content_item_tv" type="id"/>
+    <item name="lkui_dialog_content_message_tv" type="id"/>
+    <item name="lkui_dialog_footer_container" type="id"/>
+    <item name="lkui_dialog_header_container" type="id"/>
+    <item name="lkui_dialog_title_tv" type="id"/>
+    <item name="lkui_tag_key_item_click_support" type="id"/>
+    <item name="lkui_tag_key_loading_view_controller" type="id"/>
+    <string name="lkui_navigation_cancel">取消</string>
+    <string name="lkui_navigation_search">搜索</string>
+    <style name="BlueButton">
+        <item name="android:textColor">@color/lkui_N00</item>
+        <item name="android:textSize">@dimen/lkui_button_text_size_14</item>
+    </style>
+    <style name="GreyButton">
+        <item name="android:textColor">@color/lkui_button_grey_text_color</item>
+        <item name="android:textSize">@dimen/lkui_button_text_size_14</item>
+    </style>
+    <style name="LKUI.Dialog" parent="android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.2</item>
+    </style>
+    <style name="LKUI.Dialog.NoFloating" parent="LKUI.Dialog">
+        <item name="android:windowIsFloating">false</item>
+    </style>
+    <style name="LKUI_BottomDialogAnim">
+        <item name="android:windowEnterAnimation">@anim/lkui_translate_from_bottom</item>
+        <item name="android:windowExitAnimation">@anim/lkui_translate_to_bottom</item>
+    </style>
+    <style name="LKUI_DialogFadeAnim">
+        <item name="android:windowEnterAnimation">@android:anim/fade_in</item>
+        <item name="android:windowExitAnimation">@android:anim/fade_out</item>
+    </style>
+    <style name="LKUI_Dialog_newButtonText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+        <item name="android:maxLines">1</item>
+    </style>
+    <style name="LKUI_Dialog_newContentMessage">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/lkui_N900</item>
+        <item name="android:gravity">start</item>
+    </style>
+    <style name="LKUI_Dialog_newTitle">
+        <item name="android:textSize">17sp</item>
+        <item name="android:textColor">@color/lkui_N900</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="LKUI_GlobalDialog_activity" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@color/lkui_transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+    <style name="LKUI_SwitchButton">
+        <item name="kswThumbDrawable">@drawable/lkui_switchbutton_thumb</item>
+        <item name="kswBackColor">@color/lkui_switchbutton_back_color</item>
+        <item name="kswBackMeasureRatio">1.45</item>
+        <item name="kswThumbMarginLeft">-16dp</item>
+        <item name="kswThumbMarginTop">-14dp</item>
+        <item name="kswThumbMarginRight">-16dp</item>
+        <item name="kswThumbMarginBottom">-14dp</item>
+        <item name="kswThumbWidth">@dimen/ksw_md_thumb_ripple_size</item>
+        <item name="kswThumbHeight">@dimen/ksw_md_thumb_ripple_size</item>
+    </style>
+    <style name="LargeBlueButton">
+        <item name="android:textColor">@color/lkui_N00</item>
+        <item name="android:textSize">@dimen/lkui_button_text_size_17</item>
+    </style>
+    <style name="LargeGreyButton">
+        <item name="android:textColor">@color/lkui_button_large_grey_text_color</item>
+        <item name="android:textSize">@dimen/lkui_button_text_size_17</item>
+    </style>
+    <style name="LargeLightButton">
+        <item name="android:textColor">@color/lkui_button_large_light_text_color</item>
+        <item name="android:textSize">@dimen/lkui_button_text_size_17</item>
+    </style>
+    <style name="LightButton">
+        <item name="android:textColor">@color/lkui_button_light_text_color</item>
+        <item name="android:textSize">@dimen/lkui_button_text_size_14</item>
+    </style>
+</resources>

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">LoadingViewstateMachine</string>
+    <string name="Doc_List_EmptyDocumentTips">Get started by creating a new document</string>
+    <string name="Doc_List_CreateDocument">Create</string>
+    <string name="Doc_Facade_EmptyShareVisit">No Shared Document</string>
+    <string name="Doc_Facade_NoStar">No content. Add documents or folders to favorites that you want to easily find later.</string>
+    <string name="Doc_List_OfflineEmptyAvailableFile">No file available offline</string>
+    <string name="Doc_List_OfflineBannerTitle">Make your important files available without an internet connection</string>
+    <string name="Doc_Facade_OfflineDocListInvisitable">The connection is offline，please browse the documents later.</string>
+    <string name="Doc_Facade_LoadFailed">Loading failed,tap screen to try again please</string>
+
+</resources>

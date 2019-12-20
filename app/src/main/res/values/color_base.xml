@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--色板-->
+    <!--blue 蓝色系-->
+    <color name="space_kit_b900">@color/lkui_B900</color>
+    <color name="space_kit_b800">@color/lkui_B800</color>
+    <color name="space_kit_b700">@color/lkui_B700</color>
+    <color name="space_kit_b600">@color/lkui_B600</color>
+    <color name="space_kit_b500">@color/lkui_B500</color>
+    <color name="space_kit_b400">@color/lkui_B400</color>
+    <color name="space_kit_b300">@color/lkui_B300</color>
+    <color name="space_kit_b200">@color/lkui_B200</color>
+    <color name="space_kit_b100">@color/lkui_B100</color>
+    <color name="space_kit_b50">@color/lkui_B50</color>
+    <!--wathet blue 浅蓝色-->
+    <color name="space_kit_w900">@color/lkui_W900</color>
+    <color name="space_kit_w800">@color/lkui_W800</color>
+    <color name="space_kit_w700">@color/lkui_W700</color>
+    <color name="space_kit_w600">@color/lkui_W600</color>
+    <color name="space_kit_w500">@color/lkui_W500</color>
+    <color name="space_kit_w400">@color/lkui_W400</color>
+    <color name="space_kit_w300">@color/lkui_W300</color>
+    <color name="space_kit_w200">@color/lkui_W200</color>
+    <color name="space_kit_w100">@color/lkui_W100</color>
+    <color name="space_kit_w50">@color/lkui_W50</color>
+    <!--turquoise 青绿色系-->
+    <color name="space_kit_t900">@color/lkui_T900</color>
+    <color name="space_kit_t800">@color/lkui_T800</color>
+    <color name="space_kit_t700">@color/lkui_T700</color>
+    <color name="space_kit_t600">@color/lkui_T600</color>
+    <color name="space_kit_t500">@color/lkui_T500</color>
+    <color name="space_kit_t400">@color/lkui_T400</color>
+    <color name="space_kit_t300">@color/lkui_T300</color>
+    <color name="space_kit_t200">@color/lkui_T200</color>
+    <color name="space_kit_t100">@color/lkui_T100</color>
+    <color name="space_kit_t50">@color/lkui_T50</color>
+    <!--green 绿色系-->
+    <color name="space_kit_g900">@color/lkui_G900</color>
+    <color name="space_kit_g800">@color/lkui_G800</color>
+    <color name="space_kit_g700">@color/lkui_G700</color>
+    <color name="space_kit_g600">@color/lkui_G600</color>
+    <color name="space_kit_g500">@color/lkui_G500</color>
+    <color name="space_kit_g400">@color/lkui_G400</color>
+    <color name="space_kit_g300">@color/lkui_G300</color>
+    <color name="space_kit_g200">@color/lkui_G200</color>
+    <color name="space_kit_g100">@color/lkui_G100</color>
+    <color name="space_kit_g50">@color/lkui_G50</color>
+    <!--lime 石灰色系-->
+    <color name="space_kit_l900">@color/lkui_L900</color>
+    <color name="space_kit_l800">@color/lkui_L800</color>
+    <color name="space_kit_l700">@color/lkui_L700</color>
+    <color name="space_kit_l600">@color/lkui_L600</color>
+    <color name="space_kit_l500">@color/lkui_L500</color>
+    <color name="space_kit_l400">@color/lkui_L400</color>
+    <color name="space_kit_l300">@color/lkui_L300</color>
+    <color name="space_kit_l200">@color/lkui_L200</color>
+    <color name="space_kit_l100">@color/lkui_L100</color>
+    <color name="space_kit_l50">@color/lkui_L50</color>
+    <!--yellow 黄色系-->
+    <color name="space_kit_y900">@color/lkui_Y900</color>
+    <color name="space_kit_y800">@color/lkui_Y800</color>
+    <color name="space_kit_y700">@color/lkui_Y700</color>
+    <color name="space_kit_y600">@color/lkui_Y600</color>
+    <color name="space_kit_y500">@color/lkui_Y500</color>
+    <color name="space_kit_y400">@color/lkui_Y400</color>
+    <color name="space_kit_y300">@color/lkui_Y300</color>
+    <color name="space_kit_y200">@color/lkui_Y200</color>
+    <color name="space_kit_y100">@color/lkui_Y100</color>
+    <color name="space_kit_y50">@color/lkui_Y50</color>
+    <!--orange 橙色系-->
+    <color name="space_kit_o900">@color/lkui_O900</color>
+    <color name="space_kit_o800">@color/lkui_O800</color>
+    <color name="space_kit_o700">@color/lkui_O700</color>
+    <color name="space_kit_o600">@color/lkui_O600</color>
+    <color name="space_kit_o500">@color/lkui_O500</color>
+    <color name="space_kit_o400">@color/lkui_O400</color>
+    <color name="space_kit_o300">@color/lkui_O300</color>
+    <color name="space_kit_o200">@color/lkui_O200</color>
+    <color name="space_kit_o100">@color/lkui_O100</color>
+    <color name="space_kit_o50">@color/lkui_O50</color>
+    <!--red 红色系-->
+    <color name="space_kit_r900">@color/lkui_R900</color>
+    <color name="space_kit_r800">@color/lkui_R800</color>
+    <color name="space_kit_r700">@color/lkui_R700</color>
+    <color name="space_kit_r600">@color/lkui_R600</color>
+    <color name="space_kit_r500">@color/lkui_R500</color>
+    <color name="space_kit_r400">@color/lkui_R400</color>
+    <color name="space_kit_r300">@color/lkui_R300</color>
+    <color name="space_kit_r200">@color/lkui_R200</color>
+    <color name="space_kit_r100">@color/lkui_R100</color>
+    <color name="space_kit_r50">@color/lkui_R50</color>
+    <!--carmine 暗红色系-->
+    <color name="space_kit_c900">@color/lkui_C900</color>
+    <color name="space_kit_c800">@color/lkui_C800</color>
+    <color name="space_kit_c700">@color/lkui_C700</color>
+    <color name="space_kit_c600">@color/lkui_C600</color>
+    <color name="space_kit_c500">@color/lkui_C500</color>
+    <color name="space_kit_c400">@color/lkui_C400</color>
+    <color name="space_kit_c300">@color/lkui_C300</color>
+    <color name="space_kit_c200">@color/lkui_C200</color>
+    <color name="space_kit_c100">@color/lkui_C100</color>
+    <color name="space_kit_c50">@color/lkui_C50</color>
+    <!--violet 蓝紫色系-->
+    <color name="space_kit_v900">@color/lkui_V900</color>
+    <color name="space_kit_v800">@color/lkui_V800</color>
+    <color name="space_kit_v700">@color/lkui_V700</color>
+    <color name="space_kit_v600">@color/lkui_V600</color>
+    <color name="space_kit_v500">@color/lkui_V500</color>
+    <color name="space_kit_v400">@color/lkui_V400</color>
+    <color name="space_kit_v300">@color/lkui_V300</color>
+    <color name="space_kit_v200">@color/lkui_V200</color>
+    <color name="space_kit_v100">@color/lkui_V100</color>
+    <color name="space_kit_v50">@color/lkui_V50</color>
+    <!--purple 紫色系-->
+    <color name="space_kit_p900">@color/lkui_P900</color>
+    <color name="space_kit_p800">@color/lkui_P800</color>
+    <color name="space_kit_p700">@color/lkui_P700</color>
+    <color name="space_kit_p600">@color/lkui_P600</color>
+    <color name="space_kit_p500">@color/lkui_P500</color>
+    <color name="space_kit_p400">@color/lkui_P400</color>
+    <color name="space_kit_p300">@color/lkui_P300</color>
+    <color name="space_kit_p200">@color/lkui_P200</color>
+    <color name="space_kit_p100">@color/lkui_P100</color>
+    <color name="space_kit_p50">@color/lkui_P50</color>
+    <!--indigo 靛蓝色系-->
+    <color name="space_kit_i900">@color/lkui_I900</color>
+    <color name="space_kit_i800">@color/lkui_I800</color>
+    <color name="space_kit_i700">@color/lkui_I700</color>
+    <color name="space_kit_i600">@color/lkui_I600</color>
+    <color name="space_kit_i500">@color/lkui_I500</color>
+    <color name="space_kit_i400">@color/lkui_I400</color>
+    <color name="space_kit_i300">@color/lkui_I300</color>
+    <color name="space_kit_i200">@color/lkui_I200</color>
+    <color name="space_kit_i100">@color/lkui_I100</color>
+    <color name="space_kit_i50">@color/lkui_I50</color>
+    <!--neutral 中性色系-->
+    <color name="space_kit_n1000">@color/lkui_N1000</color>
+    <color name="space_kit_n950">@color/lkui_N950</color>
+    <color name="space_kit_n900">@color/lkui_N900</color>
+    <color name="space_kit_n800">@color/lkui_N800</color>
+    <color name="space_kit_n700">@color/lkui_N700</color>
+    <color name="space_kit_n650">@color/lkui_N650</color>
+    <color name="space_kit_n600">@color/lkui_N600</color>
+    <color name="space_kit_n500">@color/lkui_N500</color>
+    <color name="space_kit_n400">@color/lkui_N400</color>
+    <color name="space_kit_n400_alpha_80">#80BBBFC4</color>
+    <color name="space_kit_n300">@color/lkui_N300</color>
+    <color name="space_kit_n200">@color/lkui_N200</color>
+    <color name="space_kit_n100">@color/lkui_N100</color>
+    <color name="space_kit_n50">@color/lkui_N50</color>
+    <color name="space_kit_n00">@color/lkui_N00</color>
+
+    <color name="space_kit_trans">#00000000</color>
+    <color name="space_kit_black">@color/space_kit_n1000</color>
+    <color name="space_kit_white">@color/space_kit_n00</color>
+
+
+    <color name="space_kit_press_shadow">#0D1F2329</color>
+    <!--可点击控件不可点击态蒙层颜色-->
+    <color name="space_kit_disable_shadow">#80FFFFFF</color>
+    <!--switch开关控件颜色-->
+    <color name="space_kit_switch_color">@color/space_kit_b500</color>
+    <!--品牌色-->
+    <color name="space_kit_brand_color">@color/space_kit_b500</color>
+    <!--黑色文字颜色-->
+    <color name="space_kit_txt_black">@color/space_kit_n900</color>
+
+
+    <color name="space_kit_b500_alpha_b3">#b33370FF</color>
+    <color name="space_kit_b500_alpha_de">#de3370FF</color>
+    <color name="space_kit_b500_alpha_7f">#7f3370FF</color>
+    <color name="space_kit_b500_alpha_80">#803370FF</color>
+
+
+    <color name="space_kit_n100_alpha_4c">#4CF5F6F7</color>
+
+    <color name="space_kit_n00_alpha_40">#40FFFFFF</color>
+    <color name="space_kit_n00_alpha_80">#80FFFFFF</color>
+    <color name="space_kit_n00_alpha_e5">#e5FFFFFF</color>
+    <color name="space_kit_n00_alpha_b2">#b2FFFFFF</color>
+    <color name="space_kit_n00_alpha_7f">#7fFFFFFF</color>
+    <color name="space_kit_n200_alpha_7f">#7fEFF0F1</color>
+    <color name="space_kit_n300_alpha_7f">#7fE3E5EA</color>
+    <color name="space_kit_n300_alpha_80">#80E3E5EA</color>
+    <color name="space_kit_n600_alpha_66">#66646A73</color>
+    <color name="space_kit_n900_alpha_1a">#1a1F2329</color>
+    <color name="space_kit_n900_alpha_4d">#4d1F2329</color>
+    <color name="space_kit_n900_alpha_bf">#bf1F2329</color>
+    <color name="space_kit_n900_alpha_19">#191F2329</color>
+    <color name="space_kit_n900_alpha_26">#261F2329</color>
+    <color name="space_kit_n900_alpha_80">#801F2329</color>
+    <color name="space_kit_n900_alpha_4c">#4c1F2329</color>
+    <color name="space_kit_n900_alpha_66">#661F2329</color>
+    <color name="space_kit_n900_alpha_99">#991F2329</color>
+    <color name="space_kit_n900_alpha_de">#de1F2329</color>
+    <color name="space_kit_n900_alpha_33">#331F2329</color>
+    <color name="space_kit_n900_alpha_45">#451F2329</color>
+    <color name="space_kit_n1000_alpha_19">#19000000</color>
+    <color name="space_kit_n1000_alpha_4d">#4d000000</color>
+    <color name="space_kit_n1000_alpha_26">#26000000</color>
+    <color name="space_kit_n1000_alpha_33">#33000000</color>
+    <color name="space_kit_n1000_alpha_4c">#4c000000</color>
+    <color name="space_kit_n1000_alpha_50">#50000000</color>
+    <color name="space_kit_n1000_alpha_b3">#b3000000</color>
+    <color name="space_kit_n1000_alpha_80">#80000000</color>
+    <color name="space_kit_n1000_alpha_99">#99000000</color>
+    <color name="space_kit_n1000_alpha_1a">#1a000000</color>
+    <color name="space_kit_n1000_alpha_7f">#7f000000</color>
+    <color name="space_kit_n1000_alpha_cc">#cc000000</color>
+
+    <color name="space_kit_r500_alpha_eb">#ebF54A45</color>
+
+
+    <!--箭头颜色-->
+    <color name="space_kit_arrows_color">@color/space_kit_n500</color>
+    <!--搜索框文字颜色-->
+    <color name="space_kit_search_font_color">@color/space_kit_n500</color>
+    <!--搜索框底色-->
+    <color name="space_kit_search_color">@color/space_kit_n100</color>
+    <!--普通输入框文字颜色-->
+    <color name="space_kit_input_box_font_color">@color/space_kit_n500</color>
+    <!--普通输入框底色-->
+    <color name="space_kit_input_box_color">@color/space_kit_n300</color>
+    <!--分割线颜色-->
+    <color name="space_kit_divider_color">@color/space_kit_n300</color>
+
+
+</resources>

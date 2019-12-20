@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--按钮1 高固定48dp，宽度距离屏幕左右两侧固定16dp -->
+    <style name="SpaceKitBtn1Parent" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_height">@dimen/space_kit_len_48</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginStart">@dimen/space_kit_len_16</item>
+        <item name="android:layout_marginEnd">@dimen/space_kit_len_16</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/space_kit_font_btn</item>
+    </style>
+    <!--按钮1 一级按钮-->
+    <style name="SpaceKitBtn1Level1" parent="SpaceKitBtn1Parent">
+        <item name="android:background">@drawable/space_kit_btn_l1_bg_sel</item>
+        <item name="android:textColor">@color/space_kit_n00</item>
+    </style>
+
+    <!--按钮1 二级按钮 disable状态需要手动改变颜色-->
+    <style name="SpaceKitBtn1Level2" parent="SpaceKitBtn1Parent">
+        <item name="android:background">@drawable/space_kit_btn_l2_bg_sel</item>
+        <item name="android:textColor">@color/space_kit_brand_color</item>
+    </style>
+
+    <!--按钮1 三级按钮-->
+    <style name="SpaceKitBtn1Level3" parent="SpaceKitBtn1Parent">
+        <item name="android:background">@drawable/space_kit_btn_l2_bg_sel</item>
+        <item name="android:textColor">@color/space_kit_n600</item>
+    </style>
+
+
+    <!--按钮2 高固定40dp，宽度取决于文字内容宽度，文字距离按钮左右两侧固定16dp，宽度自适应-->
+    <style name="SpaceKitBtn2Parent" parent="@style/Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_height">@dimen/space_kit_len_40</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:paddingStart">@dimen/space_kit_len_16</item>
+        <item name="android:paddingEnd">@dimen/space_kit_len_16</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">@dimen/space_kit_font_btn</item>
+    </style>g
+    <!--按钮2 一级按钮-->
+    <style name="SpaceKitBtn2Level1" parent="SpaceKitBtn2Parent">
+        <item name="android:background">@drawable/space_kit_btn_l1_bg_sel</item>
+        <item name="android:textColor">@color/space_kit_n00</item>
+    </style>
+
+    <!--按钮2 二级按钮 disable状态需要手动改变颜色-->
+    <style name="SpaceKitBtn2Level2" parent="SpaceKitBtn2Parent">
+        <item name="android:background">@drawable/space_kit_btn_l2_bg_sel</item>
+        <item name="android:textColor">@color/space_kit_brand_color</item>
+    </style>
+
+    <!--按钮2 三级按钮-->
+    <style name="SpaceKitBtn2Level3" parent="SpaceKitBtn2Parent">
+        <item name="android:background">@drawable/space_kit_btn_l2_bg_sel</item>
+        <item name="android:textColor">@color/space_kit_n600</item>
+    </style>
+</resources>
