@@ -120,6 +120,13 @@
         <!--android:layout_marginLeft="20dp"-->
         <!--android:layout_marginRight="20dp"-->
         <!--android:onClick="idle"/>-->
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:entries="@array/category">
+
+        </Spinner>
 
 
     </LinearLayout>
@@ -129,9 +136,10 @@
         android:layout_height="1dp"
         android:background="@android:color/black" />
 
-    <com.zhiqing.loadingviewstatemachine.listloadstate.LoadStateView
+    <com.zhiqing.loadingviewstatemachine.loadstateview.LoadStateView
         android:id="@+id/list_state_view_root"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        />
 
 </LinearLayout>

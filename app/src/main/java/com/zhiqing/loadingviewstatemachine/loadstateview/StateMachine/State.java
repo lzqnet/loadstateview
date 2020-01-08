@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.zhiqing.loadingviewstatemachine.listloadstate.StateMachine;
+package com.zhiqing.loadingviewstatemachine.loadstateview.StateMachine;
 
 import android.os.Message;
 

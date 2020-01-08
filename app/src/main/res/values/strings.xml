@@ -8,5 +8,22 @@
     <string name="Doc_List_OfflineBannerTitle">Make your important files available without an internet connection</string>
     <string name="Doc_Facade_OfflineDocListInvisitable">The connection is offline，please browse the documents later.</string>
     <string name="Doc_Facade_LoadFailed">Loading failed,tap screen to try again please</string>
+    <string name="Doc_List_FilterEmptyDocTips">没有筛选结果，不妨试试</string>
 
+    <string-array name="category">
+        <item>RECENT_NORMAL</item>
+        <item>RECENT_FILTER</item>
+
+        <item>MY_SPACE_NORMAL</item>
+        <item>MY_SPACE_FILTER</item>
+
+        <item>SHARE_NORMAL</item>
+
+        <item>FAVORITE_NORMAL</item>
+        <item>FAVORITE_FILTER</item>
+
+        <item>OFFLINE_NORMAL</item>
+
+        <item>UNKNOW</item>
+    </string-array>
 </resources>

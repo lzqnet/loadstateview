@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.zhiqing.loadingviewstatemachine.listloadstate.StateMachine;
+package com.zhiqing.loadingviewstatemachine.loadstateview.StateMachine;
 
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -1550,13 +1550,13 @@ public class StateMachine {
         private boolean mIsConstructionCompleted;
 
         /** Stack used to manage the current hierarchy of states */
-        private StateInfo mStateStack[];
+        private StateInfo[] mStateStack;
 
         /** Top of mStateStack */
         private int mStateStackTopIndex = -1;
 
         /** A temporary stack used to manage the state stack */
-        private StateInfo mTempStateStack[];
+        private StateInfo[] mTempStateStack;
 
         /** The top of the mTempStateStack */
         private int mTempStateStackCount;

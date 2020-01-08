@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.zhiqing.loadingviewstatemachine.listloadstate.StateMachine;
+package com.zhiqing.loadingviewstatemachine.loadstateview.StateMachine;
 
 import android.os.Message;
 
@@ -28,12 +28,12 @@ public interface IState {
     /**
      * Returned by processMessage to indicate the the message was processed.
      */
-    static final boolean HANDLED = true;
+    boolean HANDLED = true;
 
     /**
      * Returned by processMessage to indicate the the message was NOT processed.
      */
-    static final boolean NOT_HANDLED = false;
+    boolean NOT_HANDLED = false;
 
     /**
      * Called when a state is entered.

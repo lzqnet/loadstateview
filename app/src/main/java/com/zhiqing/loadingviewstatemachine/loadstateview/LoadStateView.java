@@ -1,7 +1,8 @@
-package com.zhiqing.loadingviewstatemachine.listloadstate;
+package com.zhiqing.loadingviewstatemachine.loadstateview;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -10,17 +11,19 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.zhiqing.loadingviewstatemachine.BearLottieView;
 import com.zhiqing.loadingviewstatemachine.R;
 
 public class LoadStateView extends FrameLayout {
-    private final static String TAG = "load_state_view_module";
+    private final static String TAG = LoadStateContants.MODULE_NAME;
 
     LoadingViewHolder loadingViewHolder;
     EmptyViewHolder emptyViewHolder;
     LoadedFailViewHolder loadedFailViewHolder;
     EmptyViewAttrEntity currentEmptyViewAttr;
+    LoadedFailViewAttrEntity currentLoadedFailEntity;
 
     public LoadStateView(Context context) {
         super(context);
@@ -42,23 +45,74 @@ public class LoadStateView extends FrameLayout {
         loadingViewHolder = new LoadingViewHolder();
         emptyViewHolder = new EmptyViewHolder();
         loadedFailViewHolder = new LoadedFailViewHolder();
+        addOnLayoutChangeListener(new View.OnLayoutChangeListener(){
+            @Override
+            public void onLayoutChange(View v,
+                                       int left,
+                                       int top,
+                                       int right,
+                                       int bottom,
+                                       int oldLeft,
+                                       int oldTop,
+                                       int oldRight,
+                                       int oldBottom) {
+                if (emptyViewHolder.getRootView().getVisibility() == VISIBLE) {
+                    showAndAdjustLayoutPosition(emptyViewHolder);
+                }
+                if (loadedFailViewHolder.getRootView().getVisibility() == VISIBLE) {
+                    showAndAdjustLayoutPosition(loadedFailViewHolder);
+                }
+                if (loadingViewHolder.getRootView().getVisibility() == VISIBLE) {
+                    showAndAdjustLayoutPosition(loadingViewHolder);
+                }
+
+            }
+        });
+
+    }
+
+    private void showAndAdjustLayoutPosition(IViewHolder holder) {
+        if (getVisibility() == VISIBLE) {
+            Rect rect = new Rect();
+            if (getGlobalVisibleRect(rect) && rect.height() > 0) {
+                try {
+                    View view = holder.getRootView();
+                    int viewMeasuredHeight = view.getMeasuredHeight();
+                    int marginTop = (rect.height() - viewMeasuredHeight) / 2;
+                    if (marginTop > 0 && marginTop != holder.getCurrentMarginTop()) {
+                        holder.setCurrentMarginTop(marginTop);
+                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                        params.setMargins(0, marginTop, 0, 0);
+                        view.setLayoutParams(params);
+                    }
+                    view.setVisibility(VISIBLE);
+                } catch (Exception e) {
+                    Log.e(TAG, "showAndAdjustLayoutPosition: ", e);
+                }
+            } else {
+                Log.w(TAG, "showAndAdjustLayoutPosition: get LoadStateView height fail,show state view fail !!");
+            }
+        } else {
+            Log.w(TAG, "showAndAdjustLayoutPosition: LoadStateView is not visible,show state view fail !!");
+        }
     }
 
     void registerEmptyStateClickHandler(final EmptyStateHandler handler) {
         if (handler == null) {
+            Log.e(TAG, "registerEmptyStateClickHandler: EmptyStateHandler is invalid");
             return;
         }
         emptyViewHolder.masterBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                handler.masterButtonTouchEvent();
+                handler.onMasterButtonTouchEvent();
             }
         });
 
         emptyViewHolder.slaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                handler.slaveButtonTouchEvent();
+                handler.onSlaveButtonTouchEvent();
             }
         });
     }
@@ -68,39 +122,71 @@ public class LoadStateView extends FrameLayout {
         emptyViewHolder.slaveBtn.setOnClickListener(null);
     }
 
-    void showLoadedFailView(LoadedFailViewAttrEntity attr) {
+    void registerLoadedFailStateClickHandler(final LoadStateView.LoadedFailHandler handler) {
+        if (handler == null) {
+            Log.w(TAG, "registerLoadedFailStateClickHandler: LoadedFailHandler is invalid");
+            return;
+        }
+        loadedFailViewHolder.loadedFailViewRoot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handler.onTouchEvent();
+            }
+        });
+    }
+
+    void unRegisterLoadedFailStateClickHandler() {
+        loadedFailViewHolder.loadedFailViewRoot.setOnClickListener(null);
+    }
+
+    void showLoadedFailView(final LoadedFailViewAttrEntity attr) {
         if (attr == null) {
-            Log.e(TAG, "ListStateView.java.showLoadedFailView: 46 attr is null");
+            Log.w(TAG, "ListStateView.java.showLoadedFailView: 46 attr is null");
             return;
         }
         setVisibility(VISIBLE);
-        loadedFailViewHolder.showLoadedFailView(attr);
         loadingViewHolder.hideLoading();
         emptyViewHolder.hideEmptyView();
+        post(new Runnable() {
+            @Override
+            public void run() {
+                loadedFailViewHolder.showLoadedFailView(attr);
+            }
+        });
     }
 
     void showLoadingView() {
         setVisibility(VISIBLE);
-        loadingViewHolder.showLoading();
         emptyViewHolder.hideEmptyView();
         loadedFailViewHolder.hideLoadedFailView();
+        post(new Runnable() {
+            @Override
+            public void run() {
+                loadingViewHolder.showLoading();
+            }
+        });
     }
 
-    void showEmptyView(EmptyViewAttrEntity attr) {
+    void showEmptyView(final EmptyViewAttrEntity attr) {
         setVisibility(VISIBLE);
-        if (currentEmptyViewAttr != attr) {
-            currentEmptyViewAttr = attr;
-            emptyViewHolder.setEmptyViewAttr(attr);
-        }
         loadingViewHolder.hideLoading();
-        emptyViewHolder.showEmptyView();
         loadedFailViewHolder.hideLoadedFailView();
+        post(new Runnable() {
+            @Override
+            public void run() {
+                emptyViewHolder.showEmptyView(attr);
+            }
+        });
     }
 
     public interface EmptyStateHandler {
-        void masterButtonTouchEvent();
+        void onMasterButtonTouchEvent();
 
-        void slaveButtonTouchEvent();
+        void onSlaveButtonTouchEvent();
+    }
+
+    public interface LoadedFailHandler {
+        void onTouchEvent();
     }
 
     public static class EmptyViewAttrEntity {
@@ -217,9 +303,11 @@ public class LoadStateView extends FrameLayout {
         }
     }
 
-    private class LoadingViewHolder {
+    private class LoadingViewHolder implements IViewHolder{
         LinearLayout loadingViewRoot;
         BearLottieView loadingLottieView;
+        int currentMarginTop;
+
 
         private LoadingViewHolder() {
             init();
@@ -230,14 +318,30 @@ public class LoadStateView extends FrameLayout {
             loadingLottieView = findViewById(R.id.list_state_loading_Lottie_view);
         }
 
+        @Override
+        public int getCurrentMarginTop() {
+            return currentMarginTop;
+        }
+
+        @Override
+        public void setCurrentMarginTop(int value) {
+            currentMarginTop=value;
+        }
+
         private void showLoading() {
-            loadingViewRoot.setVisibility(VISIBLE);
+            showAndAdjustLayoutPosition(this);
             if (loadingLottieView != null) {
                 loadingLottieView.playAnimation();
             }
         }
 
+        @Override
+        public View getRootView() {
+            return loadingViewRoot;
+        }
+
         private void hideLoading() {
+            currentMarginTop = 0;
             loadingViewRoot.setVisibility(GONE);
             if (loadingLottieView != null) {
                 loadingLottieView.cancelAnimation();
@@ -245,13 +349,14 @@ public class LoadStateView extends FrameLayout {
         }
     }
 
-    private class EmptyViewHolder {
+    private class EmptyViewHolder implements IViewHolder{
         LinearLayout emptyViewRoot;
         ImageView imageIcon;
         TextView masterTip;
         TextView slaveTip;
         Button masterBtn;
         Button slaveBtn;
+        int currentMarginTop;
 
         private EmptyViewHolder() {
             init();
@@ -267,10 +372,15 @@ public class LoadStateView extends FrameLayout {
         }
 
         private void setEmptyViewAttr(EmptyViewAttrEntity attr) {
-            if (attr == null) {
-                Log.e(TAG, "ListStateView.java.setEmptyViewAttr: 83");
+            if (attr == null || currentEmptyViewAttr == attr) {
+                Log.w(TAG, "ListStateView.java.setEmptyViewAttr: currentEmptyViewAttr="
+                    + currentEmptyViewAttr
+                    + " attr="
+                    + attr);
                 return;
             }
+            currentEmptyViewAttr = attr;
+
             Resources resources = getResources();
             imageIcon.setImageResource(
                 resources.getIdentifier(attr.imageRes, "drawable", getContext().getPackageName()));
@@ -303,22 +413,40 @@ public class LoadStateView extends FrameLayout {
             }
         }
 
-        private void showEmptyView() {
-            emptyViewRoot.setVisibility(VISIBLE);
+        @Override
+        public int getCurrentMarginTop() {
+            return currentMarginTop;
+        }
+
+        @Override
+        public void setCurrentMarginTop(int value) {
+            currentMarginTop=value;
+        }
+
+        @Override
+        public View getRootView() {
+            return emptyViewRoot;
+        }
+
+        private void showEmptyView(EmptyViewAttrEntity attr) {
+            setEmptyViewAttr(attr);
+            showAndAdjustLayoutPosition(this);
         }
 
         private void hideEmptyView() {
+            currentMarginTop = 0;
             emptyViewRoot.setVisibility(GONE);
         }
     }
 
-    private class LoadedFailViewHolder {
+    private class LoadedFailViewHolder implements IViewHolder{
         LinearLayout loadedFailViewRoot;
         ImageView imageIcon;
         TextView masterTip;
         TextView slaveTip;
         Button masterBtn;
         Button slaveBtn;
+        int currentMarginTop;
 
         private LoadedFailViewHolder() {
             init();
@@ -334,10 +462,14 @@ public class LoadStateView extends FrameLayout {
         }
 
         private void setLoadedFailViewAttr(LoadedFailViewAttrEntity attr) {
-            if (attr == null) {
-                Log.e(TAG, "ListStateView.java.setLoadedFailViewAttr: 83");
+            if (attr == null || currentLoadedFailEntity == attr) {
+                Log.w(TAG, "ListStateView.java.setLoadedFailViewAttr: attr="
+                    + attr
+                    + " currentLoadedFailEntity="
+                    + currentLoadedFailEntity);
                 return;
             }
+            currentLoadedFailEntity = attr;
             Resources resources = getResources();
             imageIcon.setImageResource(
                 resources.getIdentifier(attr.imageRes, "drawable", getContext().getPackageName()));
@@ -370,13 +502,36 @@ public class LoadStateView extends FrameLayout {
             }
         }
 
+        @Override
+        public int getCurrentMarginTop() {
+            return currentMarginTop;
+        }
+
+        @Override
+        public void setCurrentMarginTop(int value) {
+            currentMarginTop=value;
+        }
+
+        @Override
+        public View getRootView() {
+            return loadedFailViewRoot;
+        }
+
         private void showLoadedFailView(LoadedFailViewAttrEntity attr) {
             setLoadedFailViewAttr(attr);
-            loadedFailViewRoot.setVisibility(VISIBLE);
+            showAndAdjustLayoutPosition(this);
         }
 
         private void hideLoadedFailView() {
+            currentMarginTop = 0;
             loadedFailViewRoot.setVisibility(GONE);
         }
     }
+
+    private interface IViewHolder{
+        int getCurrentMarginTop();
+        void setCurrentMarginTop(int value);
+        View getRootView();
+    }
+
 }

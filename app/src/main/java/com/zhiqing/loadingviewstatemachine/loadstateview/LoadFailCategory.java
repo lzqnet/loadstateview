@@ -1,7 +1,11 @@
-package com.zhiqing.loadingviewstatemachine.listloadstate;
+package com.zhiqing.loadingviewstatemachine.loadstateview;
 
 public enum LoadFailCategory {
-    CATEGORY_NO_NETWORK("nonewwork", 200), CATEGORY_UN_KNOW("unknow", 201);
+    CATEGORY_NO_NETWORK("nonetwork", 200),
+
+    CATEGORY_OVERTIME("overtime", 201),
+
+    CATEGORY_UN_KNOW("unknow", 202);
 
     private final String mCategoryName;
     private final int mId;

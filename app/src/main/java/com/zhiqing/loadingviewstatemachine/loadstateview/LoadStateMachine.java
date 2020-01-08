@@ -1,11 +1,17 @@
-package com.zhiqing.loadingviewstatemachine.listloadstate;
+package com.zhiqing.loadingviewstatemachine.loadstateview;
 
 import android.annotation.SuppressLint;
+
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
-import com.zhiqing.loadingviewstatemachine.listloadstate.StateMachine.State;
-import com.zhiqing.loadingviewstatemachine.listloadstate.StateMachine.StateMachine;
+
+import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
+import com.zhiqing.loadingviewstatemachine.loadstateview.StateMachine.State;
+import com.zhiqing.loadingviewstatemachine.loadstateview.StateMachine.StateMachine;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
@@ -13,7 +19,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
 class LoadStateMachine extends StateMachine {
-    private final static String TAG = "load_state_view_module";
+    private final static String TAG = LoadStateContants.MODULE_NAME;
 
     private static final int EVENT_STATE_IDLE = 1;
     private static final int EVENT_STATE_LOADING = 2;
@@ -23,14 +29,13 @@ class LoadStateMachine extends StateMachine {
 
     private static final int EVENT_STATE_LOADED_EMPTY = 4;
 
-    //private static final int EVENT_STATE_LOADED_FAIL = 5;
-    private static final int EVENT_STATE_LOADED_FAIL_UNKNOW = 6;
-    private static final int EVENT_STATE_LOADED_FAIL_NO_NETWORK = 7;
+    private static final int EVENT_STATE_LOADED_FAIL = 5;
+    private static final int EVENT_SHOW_LOADED_FAIL = 6;
+
     private final DefaultState mDefaultState = new DefaultState();
     private final StartupState mStartupState = new StartupState();
     private final IdleState mIdleState = new IdleState();
-    private final LoadedNoNetworkState mLoadedNoNetworkState = new LoadedNoNetworkState();
-    private final LoadedUnKnowFailState mLoadedUnKnowFailState = new LoadedUnKnowFailState();
+
     private final LoadedEmptyState mLoadedEmptyState = new LoadedEmptyState();
     private final LoadedFailState mLoadedFailState = new LoadedFailState();
     private final LoadedSuccessState mLoadedSuccessState = new LoadedSuccessState();
@@ -38,10 +43,16 @@ class LoadStateMachine extends StateMachine {
     private final LoadingState mLoadingState = new LoadingState();
     private final LoadState mLoadState = new LoadState();
     private LoadStateViewWrapperInternal mLoadStateViewWrapperInternal;
+    private MutableLiveData<LoadStateCategory> loadStateObserver = new MutableLiveData<>();
 
     LoadStateMachine(String name, Looper looper, EmptyCategory defEmptyCategory, LoadStateView view) {
+        this(name, looper, view);
+        mLoadStateViewWrapperInternal.setEmptyCategory(defEmptyCategory);
+    }
+
+    LoadStateMachine(String name, Looper looper, LoadStateView view) {
         super(name, looper);
-        mLoadStateViewWrapperInternal = new LoadStateViewWrapperInternal(view, defEmptyCategory);
+        mLoadStateViewWrapperInternal = new LoadStateViewWrapperInternal(view);
         addState(mDefaultState);
         addState(mStartupState, mDefaultState);
         addState(mIdleState, mDefaultState);
@@ -51,13 +62,15 @@ class LoadStateMachine extends StateMachine {
         addState(mLoadedSuccessState, mLoadedState);
         addState(mLoadedFailState, mLoadedState);
         addState(mLoadedEmptyState, mLoadedSuccessState);
-        addState(mLoadedNoNetworkState, mLoadedFailState);
-        addState(mLoadedUnKnowFailState, mLoadedFailState);
         setInitialState(mStartupState);
     }
 
+    void setEmptyCategory(EmptyCategory category) {
+        mLoadStateViewWrapperInternal.setEmptyCategory(category);
+    }
+
     void showLoadingView() {
-        sendMessage(EVENT_STATE_LOADING);
+        sendMessage(EVENT_STATE_LOADING,true);
     }
 
     void hideStateView() {
@@ -69,7 +82,7 @@ class LoadStateMachine extends StateMachine {
     }
 
     void loadedSuccess() {
-        sendMessage(EVENT_STATE_LOADED_SUCCESS);
+        sendMessage(EVENT_STATE_LOADED_SUCCESS, Integer.MAX_VALUE);
     }
 
     void loadedSuccess(int dataCount) {
@@ -77,11 +90,11 @@ class LoadStateMachine extends StateMachine {
     }
 
     void loadedFail(LoadFailCategory category) {
-        if (category == LoadFailCategory.CATEGORY_NO_NETWORK) {
-            sendMessage(EVENT_STATE_LOADED_FAIL_NO_NETWORK);
-        } else if (category == LoadFailCategory.CATEGORY_UN_KNOW) {
-            sendMessage(EVENT_STATE_LOADED_FAIL_UNKNOW);
-        }
+        sendMessage(EVENT_STATE_LOADED_FAIL, category);
+    }
+
+    void startLoading(boolean isShowLoading){
+        sendMessage(EVENT_STATE_LOADING,isShowLoading);
     }
 
     void registerEmptyStateClickHandler(LoadStateView.EmptyStateHandler handler) {
@@ -90,6 +103,22 @@ class LoadStateMachine extends StateMachine {
 
     void unRegisterEmptyStateClickHandler() {
         mLoadStateViewWrapperInternal.unRegisterEmptyStateClickHandler();
+    }
+
+    void registerLoadedFailStateClickHandler(LoadStateView.LoadedFailHandler handler) {
+        mLoadStateViewWrapperInternal.registerLoadedFailStateClickHandler(handler);
+    }
+
+    void unRegisterLoadedFailStateClickHandler() {
+        mLoadStateViewWrapperInternal.unRegisterLoadedFailStateClickHandler();
+    }
+
+    void registerStateChangeListener(@NonNull LifecycleOwner owner, @NonNull Observer<LoadStateCategory> observer) {
+        loadStateObserver.observe(owner, observer);
+    }
+
+    void unRegisterStateChangeListener(@NonNull Observer<LoadStateCategory> observer) {
+        loadStateObserver.removeObserver(observer);
     }
 
     private String dumpMessage(Message msg) {
@@ -111,12 +140,12 @@ class LoadStateMachine extends StateMachine {
             case EVENT_STATE_LOADED_EMPTY:
                 builder.append("what= EVENT_STATE_LOADED_EMPTY");
                 break;
-            case EVENT_STATE_LOADED_FAIL_UNKNOW:
-                builder.append("what= EVENT_STATE_LOADED_FAIL_UNKNOW");
+            case EVENT_STATE_LOADED_FAIL:
+                builder.append("what= EVENT_STATE_LOADED_FAIL");
                 break;
 
-            case EVENT_STATE_LOADED_FAIL_NO_NETWORK:
-                builder.append("what= EVENT_STATE_LOADED_FAIL_NO_NETWORK");
+            case EVENT_SHOW_LOADED_FAIL:
+                builder.append("what= EVENT_SHOW_LOADED_FAIL");
                 break;
 
             default:
@@ -130,55 +159,13 @@ class LoadStateMachine extends StateMachine {
         return builder.toString();
     }
 
-    private class LoadedNoNetworkState extends BaseState {
-        @Override
-        public void enter() {
-            super.enter();
-            Log.d(TAG, "LoadedNoNetworkState enter: ");
-            mLoadStateViewWrapperInternal.showLoadedFailView(LoadFailCategory.CATEGORY_NO_NETWORK);
-        }
-
-        @Override
-        public void exit() {
-            Log.d(TAG, "LoadedNoNetworkState exit: ");
-            super.exit();
-            mLoadStateViewWrapperInternal.hideListStateView();
-        }
-
-        @Override
-        public boolean processMessage(Message msg) {
-            Log.d(TAG, "LoadedNoNetworkState processMessage: msg=" + dumpMessage(msg));
-            return super.processMessage(msg);
-        }
-    }
-
-    private class LoadedUnKnowFailState extends BaseState {
-        @Override
-        public void enter() {
-            Log.d(TAG, "LoadedUnKnowFailState enter: ");
-            super.enter();
-            mLoadStateViewWrapperInternal.showLoadedFailView(LoadFailCategory.CATEGORY_UN_KNOW);
-        }
-
-        @Override
-        public void exit() {
-            Log.d(TAG, "LoadedUnKnowFailState exit: ");
-            super.exit();
-        }
-
-        @Override
-        public boolean processMessage(Message msg) {
-            Log.d(TAG, "LoadedUnKnowFailState processMessage: msg=" + dumpMessage(msg));
-            return super.processMessage(msg);
-        }
-    }
-
     private class LoadedEmptyState extends BaseState {
         @Override
         public void enter() {
             Log.d(TAG, "LoadedEmptyState enter: ");
             super.enter();
             mLoadStateViewWrapperInternal.showEmptyView();
+            loadStateObserver.postValue(LoadStateCategory.LOADED_SUCCESS_EMPTY);
         }
 
         @Override
@@ -216,6 +203,13 @@ class LoadStateMachine extends StateMachine {
         @Override
         public boolean processMessage(Message msg) {
             Log.d(TAG, "LoadedFailState processMessage: msg=" + dumpMessage(msg));
+            switch (msg.what) {
+                case EVENT_SHOW_LOADED_FAIL: {
+                    LoadFailCategory category = (LoadFailCategory) msg.obj;
+                    mLoadStateViewWrapperInternal.showLoadedFailView(category);
+                    return true;
+                }
+            }
             return super.processMessage(msg);
         }
     }
@@ -226,6 +220,7 @@ class LoadStateMachine extends StateMachine {
             Log.d(TAG, "LoadedSuccessState enter: ");
             super.enter();
             mLoadStateViewWrapperInternal.hideListStateView();
+            loadStateObserver.postValue(LoadStateCategory.LOADED_SUCCESS);
         }
 
         @Override
@@ -274,6 +269,7 @@ class LoadStateMachine extends StateMachine {
             switch (msg.what) {
                 case EVENT_STATE_LOADING:
                     transitionTo(mLoadingState);
+                    deferMessage(msg);
                     return true;
             }
             return super.processMessage(msg);
@@ -285,7 +281,7 @@ class LoadStateMachine extends StateMachine {
         public void enter() {
             Log.d(TAG, "LoadingState enter: ");
             super.enter();
-            mLoadStateViewWrapperInternal.showLoadingView();
+            loadStateObserver.postValue(LoadStateCategory.LOADING);
         }
 
         @Override
@@ -308,17 +304,24 @@ class LoadStateMachine extends StateMachine {
                     }
                     return true;
                 }
-                case EVENT_STATE_LOADED_FAIL_NO_NETWORK: {
-                    transitionTo(mLoadedNoNetworkState);
+                case EVENT_STATE_LOADED_FAIL: {
+                    transitionTo(mLoadedFailState);
+                    Message message = Message.obtain(msg);
+                    message.what = EVENT_SHOW_LOADED_FAIL;
+                    sendMessage(message);
                     return true;
                 }
 
-                case EVENT_STATE_LOADED_FAIL_UNKNOW:
-                    transitionTo(mLoadedUnKnowFailState);
-                    break;
-
                 case EVENT_STATE_LOADING:
-                    Log.d(TAG, "LoadStateMachine.java.processMessage: LoadingState already in loading state ");
+                    try {
+                        boolean isShowLoading = (boolean) msg.obj;
+                        if(isShowLoading){
+                            mLoadStateViewWrapperInternal.showLoadingView();
+                        }
+                    }catch (Exception e){
+                        Log.e(TAG, "LoadingState processMessage: ",e );
+
+                    }
                     return true;
             }
             return super.processMessage(msg);
@@ -328,19 +331,19 @@ class LoadStateMachine extends StateMachine {
     private class LoadState extends BaseState {
         @Override
         public void enter() {
-            Log.d(TAG, "LoadState enter: ");
+            Log.d(TAG, "LoadStateCategory enter: ");
             super.enter();
         }
 
         @Override
         public void exit() {
-            Log.d(TAG, "LoadState exit: ");
+            Log.d(TAG, "LoadStateCategory exit: ");
             super.exit();
         }
 
         @Override
         public boolean processMessage(Message msg) {
-            Log.d(TAG, "LoadState processMessage: msg=" + dumpMessage(msg));
+            Log.d(TAG, "LoadStateCategory processMessage: msg=" + dumpMessage(msg));
             return super.processMessage(msg);
         }
     }
@@ -351,6 +354,7 @@ class LoadStateMachine extends StateMachine {
             Log.d(TAG, "IdleState enter: ");
             super.enter();
             mLoadStateViewWrapperInternal.hideListStateView();
+            loadStateObserver.postValue(LoadStateCategory.IDLE);
         }
 
         @Override
@@ -367,6 +371,7 @@ class LoadStateMachine extends StateMachine {
                     return true;
                 case EVENT_STATE_LOADING:
                     transitionTo(mLoadingState);
+                    deferMessage(msg);
                     return true;
             }
             return super.processMessage(msg);
@@ -379,6 +384,7 @@ class LoadStateMachine extends StateMachine {
         public void enter() {
             Log.d(TAG, "StartupState enter: ");
             super.enter();
+            loadStateObserver.postValue(LoadStateCategory.STARTUP);
             Flowable.just("").observeOn(Schedulers.io()).map(new Function<String, Boolean>() {
                 @Override
                 public Boolean apply(String s) throws Exception {
@@ -416,8 +422,8 @@ class LoadStateMachine extends StateMachine {
                 case EVENT_STATE_LOADED_SUCCESS:
                 case EVENT_STATE_UPDATE_EMPTY:
                 case EVENT_STATE_LOADED_EMPTY:
-                case EVENT_STATE_LOADED_FAIL_UNKNOW:
-                case EVENT_STATE_LOADED_FAIL_NO_NETWORK:
+                case EVENT_STATE_LOADED_FAIL:
+                case EVENT_SHOW_LOADED_FAIL:
                     deferMessage(msg);
                     return true;
             }

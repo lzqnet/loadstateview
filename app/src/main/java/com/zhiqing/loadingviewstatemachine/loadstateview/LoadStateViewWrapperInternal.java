@@ -1,4 +1,4 @@
-package com.zhiqing.loadingviewstatemachine.listloadstate;
+package com.zhiqing.loadingviewstatemachine.loadstateview;
 
 import android.util.Log;
 import android.view.View;
@@ -8,32 +8,47 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-public class LoadStateViewWrapperInternal {
-    private final static String TAG = "load_state_view_module";
-    LoadStateView mLoadStateView;
-    EmptyCategory mDefaultEmptyCategory;
-    private Map<String, LoadStateView.EmptyViewAttrEntity> mEmptyViewAttrMap;
+class LoadStateViewWrapperInternal {
+    private final static String TAG = LoadStateContants.MODULE_NAME;
+    private LoadStateView mLoadStateView;
+    private EmptyCategory mEmptyCategory;
+    private Map<String, HashMap<String, LoadStateView.EmptyViewAttrEntity>> mEmptyViewAttrMap;
     private Map<String, LoadStateView.LoadedFailViewAttrEntity> mLoadedFailViewAttrMap;
 
     LoadStateViewWrapperInternal(LoadStateView mLoadStateView, EmptyCategory category) {
+        this(mLoadStateView);
+        this.mEmptyCategory = category;
+    }
+
+    LoadStateViewWrapperInternal(LoadStateView mLoadStateView) {
         this.mLoadStateView = mLoadStateView;
-        this.mDefaultEmptyCategory = category;
     }
 
     void showLoadingView() {
         mLoadStateView.showLoadingView();
     }
 
-    void showEmptyView() {
-        mLoadStateView.showEmptyView(mEmptyViewAttrMap.get(mDefaultEmptyCategory.getmCategoryName()));
+    void showEmptyView() throws RuntimeException {
+        if (mEmptyCategory != null) {
+            mLoadStateView.showEmptyView(
+                mEmptyViewAttrMap.get(mEmptyCategory.getmCategoryName()).get(mEmptyCategory.getMode().getModeName()));
+        } else {
+            throw new RuntimeException("You should call setEmptyCategory first. ");
+        }
+    }
+
+    void setEmptyCategory(EmptyCategory category) {
+        mEmptyCategory = category;
     }
 
     void showEmptyView(EmptyCategory category) {
-        mLoadStateView.showEmptyView(mEmptyViewAttrMap.get(category.getmCategoryName()));
+        mEmptyCategory = category;
+        mLoadStateView.showEmptyView(
+            mEmptyViewAttrMap.get(category.getmCategoryName()).get(mEmptyCategory.getMode().getModeName()));
     }
 
     void hideListStateView() {
-        mLoadStateView.setVisibility(View.GONE);
+        mLoadStateView.setVisibility(View.INVISIBLE);
     }
 
     void showLoadedFailView(LoadFailCategory category) {
@@ -48,6 +63,14 @@ public class LoadStateViewWrapperInternal {
         mLoadStateView.unRegisterEmptyStateClickHandler();
     }
 
+    void registerLoadedFailStateClickHandler(LoadStateView.LoadedFailHandler handler) {
+        mLoadStateView.registerLoadedFailStateClickHandler(handler);
+    }
+
+    void unRegisterLoadedFailStateClickHandler() {
+        mLoadStateView.unRegisterLoadedFailStateClickHandler();
+    }
+
     /**
      * Method that loads the config information.
      */
@@ -60,27 +83,28 @@ public class LoadStateViewWrapperInternal {
                 emptyViewConfig.load(
                     mLoadStateView.getContext().getResources().openRawResource(R.raw.empty_view_config));
 
-                mEmptyViewAttrMap = new HashMap<String, LoadStateView.EmptyViewAttrEntity>();
+                mEmptyViewAttrMap = new HashMap<>();
                 Enumeration<Object> e = emptyViewConfig.keys();
                 while (e.hasMoreElements()) {
                     String emptyCategoryName = (String) e.nextElement();
                     String data = emptyViewConfig.getProperty(emptyCategoryName);
-                    String[] datas = data.split(",");
-                    for (String theData : datas) {
+                    String[] splitData = data.split(",");
+                    for (String theData : splitData) {
                         String[] configData = theData.split("\\|");  //$NON-NLS-1$
 
                         // Create a reference of EmptyViewAttrEntity
                         LoadStateView.EmptyViewAttrEntity emptyViewAttrEntity = new LoadStateView.EmptyViewAttrEntity();
-                        emptyViewAttrEntity.setImageRes(configData[0].trim());
-                        emptyViewAttrEntity.setMasterTip(configData[1].trim());
-                        emptyViewAttrEntity.setSlaveTip(configData[2].trim());
-                        emptyViewAttrEntity.setMasterBtnName(configData[3].trim());
-                        emptyViewAttrEntity.setSlaveBtnName(configData[4].trim());
+                        emptyViewAttrEntity.setImageRes(configData[1].trim());
+                        emptyViewAttrEntity.setMasterTip(configData[2].trim());
+                        emptyViewAttrEntity.setSlaveTip(configData[3].trim());
+                        emptyViewAttrEntity.setMasterBtnName(configData[4].trim());
+                        emptyViewAttrEntity.setSlaveBtnName(configData[5].trim());
                         if (mEmptyViewAttrMap.get(emptyCategoryName) == null) {
-                            mEmptyViewAttrMap.put(emptyCategoryName, emptyViewAttrEntity);
+                            HashMap<String, LoadStateView.EmptyViewAttrEntity> infoList = new HashMap<>();
+                            infoList.put(configData[0].trim(), emptyViewAttrEntity);
+                            mEmptyViewAttrMap.put(emptyCategoryName, infoList);
                         } else {
-                            Log.e(TAG,
-                                "LoadStateViewWrapperInternal.java.emptyViewConfig: emptyViewConfig has same module config");
+                            mEmptyViewAttrMap.get(emptyCategoryName).put(configData[0].trim(), emptyViewAttrEntity);
                         }
                     }
                 }
