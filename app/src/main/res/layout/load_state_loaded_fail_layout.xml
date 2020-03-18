@@ -3,19 +3,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_state_loaded_fail_root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="vertical"
-    android:visibility="gone">
+    android:layout_gravity="center_horizontal"
+
+    android:visibility="invisible">
 
     <ImageView
         android:id="@+id/list_state_loaded_fail_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        tools:src="@drawable/load_state_empty_normal"
-        />
+        tools:src="@drawable/facade_empty_normal" />
 
     <TextView
         android:id="@+id/list_state_loaded_fail_master_tip"
@@ -26,7 +27,7 @@
         android:gravity="center"
         android:textColor="@color/space_kit_n900"
         android:textSize="16sp"
-        tools:text="@string/Doc_List_EmptyDocumentTips"/>
+        tools:text="@string/Doc_List_EmptyDocumentTips" />
 
     <TextView
         android:id="@+id/list_state_loaded_fail_slave_tip"
@@ -37,19 +38,25 @@
         android:gravity="center"
         android:textColor="@color/space_kit_n600"
         android:textSize="14sp"
-        tools:text="@string/Doc_List_EmptyDocumentTips"/>
+        tools:text="@string/Doc_Facade_OfflineBannerTitle" />
+
     <Button
         android:id="@+id/list_state_loaded_fail_master_btn"
-        style="@style/SpaceKitBtn2Level1"
         android:layout_width="@dimen/space_kit_len_180"
+        android:layout_gravity="center"
         android:layout_marginTop="@dimen/space_kit_len_20"
-        tools:text="@string/Doc_List_CreateDocument"/>
+        android:visibility="visible"
+        tools:text="@string/Doc_List_CreateDocument"
+        style="@style/SpaceKitBtn2Level1" />
+
     <Button
         android:id="@+id/list_state_loaded_fail_slave_btn"
-        style="@style/SpaceKitBtn2Level2"
         android:layout_width="@dimen/space_kit_len_180"
+        android:layout_gravity="center"
         android:layout_marginTop="@dimen/space_kit_len_12"
-        tools:text="@string/Doc_List_CreateDocument"/>
+        android:visibility="visible"
+        tools:text="@string/Doc_List_CreateDocument"
+        style="@style/SpaceKitBtn2Level2" />
 
 </LinearLayout>
 

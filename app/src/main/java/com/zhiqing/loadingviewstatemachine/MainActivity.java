@@ -105,52 +105,52 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-        loadStateViewDispatcher.init();
+        loadStateViewDispatcher.init(false);
     }
 
     public void showLoadingView(View view) {
-        Toast.makeText(this, "已点击", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "已点击 showLoadingView", Toast.LENGTH_SHORT).show();
         loadStateViewDispatcher.showLoadingView();
     }
 
     public void loadedSuccessHasData(View view) {
-        Toast.makeText(this, "已点击", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "已点击 loadedSuccessHasData", Toast.LENGTH_SHORT).show();
 
         loadStateViewDispatcher.loadedSuccess(10);
     }
 
     public void loadedSuccessNoData(View view) {
-        Toast.makeText(this, "已点击", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "已点击 loadedSuccessNoData", Toast.LENGTH_SHORT).show();
 
-        loadStateViewDispatcher.loadedSuccess();
+        loadStateViewDispatcher.loadedSuccess(0);
     }
 
     public void loadedFailNoNetwork(View view) {
-        Toast.makeText(this, "已点击", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "已点击 loadedFailNoNetwork", Toast.LENGTH_SHORT).show();
 
         loadStateViewDispatcher.loadedFail(LoadFailCategory.CATEGORY_NO_NETWORK);
     }
 
     public void loadedFailUnknow(View view) {
-        Toast.makeText(this, "已点击", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "已点击 loadedFailUnknow", Toast.LENGTH_SHORT).show();
 
         loadStateViewDispatcher.loadedFail(LoadFailCategory.CATEGORY_UN_KNOW);
     }
 
     public void updateEmptyViewHasData(View view) {
-        Toast.makeText(this, "已点击", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "已点击 updateEmptyViewHasData", Toast.LENGTH_SHORT).show();
 
         loadStateViewDispatcher.updateEmptyView(100);
     }
 
     public void updateEmptyViewNoData(View view) {
-        Toast.makeText(this, "已点击", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "已点击 updateEmptyViewNoData", Toast.LENGTH_SHORT).show();
 
         loadStateViewDispatcher.updateEmptyView(0);
     }
 
     public void idle(View view) {
-        Toast.makeText(this, "已点击", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "已点击 idle", Toast.LENGTH_SHORT).show();
 
         loadStateViewDispatcher.hideStateView();
     }

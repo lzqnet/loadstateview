@@ -44,8 +44,15 @@ class LoadStateMachine extends StateMachine {
     private final LoadState mLoadState = new LoadState();
     private LoadStateViewWrapperInternal mLoadStateViewWrapperInternal;
     private MutableLiveData<LoadStateCategory> loadStateObserver = new MutableLiveData<>();
+    //for debug
+    EmptyCategory emptyCategory;
 
-    LoadStateMachine(String name, Looper looper, EmptyCategory defEmptyCategory, LoadStateView view) {
+    private boolean isStrictMode = false;
+
+    LoadStateMachine(String name,
+                     Looper looper,
+                     EmptyCategory defEmptyCategory,
+                     LoadStateView view) {
         this(name, looper, view);
         mLoadStateViewWrapperInternal.setEmptyCategory(defEmptyCategory);
     }
@@ -66,14 +73,19 @@ class LoadStateMachine extends StateMachine {
     }
 
     void setEmptyCategory(EmptyCategory category) {
+        emptyCategory = category;
         mLoadStateViewWrapperInternal.setEmptyCategory(category);
     }
 
-    void showLoadingView() {
-        sendMessage(EVENT_STATE_LOADING,true);
+    void enableStrictMode(boolean isStrictMode) {
+        this.isStrictMode = isStrictMode;
     }
 
-    void hideStateView() {
+    void showLoadingView() {
+        sendMessage(EVENT_STATE_LOADING, true);
+    }
+
+    void resetStateView() {
         sendMessage(EVENT_STATE_IDLE);
     }
 
@@ -93,8 +105,8 @@ class LoadStateMachine extends StateMachine {
         sendMessage(EVENT_STATE_LOADED_FAIL, category);
     }
 
-    void startLoading(boolean isShowLoading){
-        sendMessage(EVENT_STATE_LOADING,isShowLoading);
+    void startLoading(boolean isShowLoading) {
+        sendMessage(EVENT_STATE_LOADING, isShowLoading);
     }
 
     void registerEmptyStateClickHandler(LoadStateView.EmptyStateHandler handler) {
@@ -113,7 +125,8 @@ class LoadStateMachine extends StateMachine {
         mLoadStateViewWrapperInternal.unRegisterLoadedFailStateClickHandler();
     }
 
-    void registerStateChangeListener(@NonNull LifecycleOwner owner, @NonNull Observer<LoadStateCategory> observer) {
+    void registerStateChangeListener(@NonNull LifecycleOwner owner,
+                                     @NonNull Observer<LoadStateCategory> observer) {
         loadStateObserver.observe(owner, observer);
     }
 
@@ -162,7 +175,7 @@ class LoadStateMachine extends StateMachine {
     private class LoadedEmptyState extends BaseState {
         @Override
         public void enter() {
-            Log.d(TAG, "LoadedEmptyState enter: ");
+            Log.d(TAG, emptyCategory + " LoadedEmptyState enter: ");
             super.enter();
             mLoadStateViewWrapperInternal.showEmptyView();
             loadStateObserver.postValue(LoadStateCategory.LOADED_SUCCESS_EMPTY);
@@ -170,54 +183,70 @@ class LoadStateMachine extends StateMachine {
 
         @Override
         public void exit() {
-            Log.d(TAG, "LoadedEmptyState exit: ");
+            Log.d(TAG, emptyCategory + " LoadedEmptyState exit: ");
             super.exit();
             mLoadStateViewWrapperInternal.hideListStateView();
         }
 
         @Override
         public boolean processMessage(Message msg) {
-            Log.d(TAG, "LoadedEmptyState processMessage: msg=" + dumpMessage(msg));
+            Log.d(TAG, emptyCategory + " LoadedEmptyState processMessage: msg=" + dumpMessage(msg));
             switch (msg.what) {
                 case EVENT_STATE_LOADED_EMPTY:
-                    Log.d(TAG, "LoadStateMachine.java.processMessage: LoadedEmptyState  already empty state ");
+                    Log.d(TAG, emptyCategory
+                        + " LoadStateMachine.java.processMessage: LoadedEmptyState  already empty state ");
                     return true;
+                default: {
+                    if (!isStrictMode) {
+                        return super.processMessage(msg);
+                    } else {
+                        return false;
+                    }
+                }
             }
-            return super.processMessage(msg);
         }
     }
 
     private class LoadedFailState extends BaseState {
         @Override
         public void enter() {
-            Log.d(TAG, "LoadedFailState enter: ");
+            Log.d(TAG, emptyCategory + " LoadedFailState enter: ");
             super.enter();
         }
 
         @Override
         public void exit() {
-            Log.d(TAG, "LoadedFailState exit: ");
+            Log.d(TAG, emptyCategory + " LoadedFailState exit: ");
             super.exit();
         }
 
         @Override
         public boolean processMessage(Message msg) {
-            Log.d(TAG, "LoadedFailState processMessage: msg=" + dumpMessage(msg));
+            Log.d(TAG, emptyCategory + " LoadedFailState processMessage: msg=" + dumpMessage(msg));
             switch (msg.what) {
+                case EVENT_STATE_IDLE:
+                    transitionTo(mIdleState);
+                    return true;
                 case EVENT_SHOW_LOADED_FAIL: {
                     LoadFailCategory category = (LoadFailCategory) msg.obj;
                     mLoadStateViewWrapperInternal.showLoadedFailView(category);
                     return true;
                 }
+                default: {
+                    if (!isStrictMode) {
+                        return super.processMessage(msg);
+                    } else {
+                        return false;
+                    }
+                }
             }
-            return super.processMessage(msg);
         }
     }
 
     private class LoadedSuccessState extends BaseState {
         @Override
         public void enter() {
-            Log.d(TAG, "LoadedSuccessState enter: ");
+            Log.d(TAG, emptyCategory + " LoadedSuccessState enter: ");
             super.enter();
             mLoadStateViewWrapperInternal.hideListStateView();
             loadStateObserver.postValue(LoadStateCategory.LOADED_SUCCESS);
@@ -225,13 +254,14 @@ class LoadStateMachine extends StateMachine {
 
         @Override
         public void exit() {
-            Log.d(TAG, "LoadedSuccessState exit: ");
+            Log.d(TAG, emptyCategory + " LoadedSuccessState exit: ");
             super.exit();
         }
 
         @Override
         public boolean processMessage(Message msg) {
-            Log.d(TAG, "LoadedSuccessState processMessage: msg=" + dumpMessage(msg));
+            Log.d(TAG,
+                emptyCategory + " LoadedSuccessState processMessage: msg=" + dumpMessage(msg));
             switch (msg.what) {
                 case EVENT_STATE_LOADED_EMPTY:
                     transitionTo(mLoadedEmptyState);
@@ -245,55 +275,67 @@ class LoadStateMachine extends StateMachine {
                     }
                     return true;
                 }
+                default: {
+                    if (!isStrictMode) {
+                        return super.processMessage(msg);
+                    } else {
+                        return false;
+                    }
+                }
             }
-            return super.processMessage(msg);
         }
     }
 
     private class LoadedState extends BaseState {
         @Override
         public void enter() {
-            Log.d(TAG, "LoadedState enter: ");
+            Log.d(TAG, emptyCategory + " LoadedState enter: ");
             super.enter();
         }
 
         @Override
         public void exit() {
-            Log.d(TAG, "LoadedState exit: ");
+            Log.d(TAG, emptyCategory + " LoadedState exit: ");
             super.exit();
         }
 
         @Override
         public boolean processMessage(Message msg) {
-            Log.d(TAG, "LoadedState processMessage: msg=" + dumpMessage(msg));
+            Log.d(TAG, emptyCategory + " LoadedState processMessage: msg=" + dumpMessage(msg));
             switch (msg.what) {
                 case EVENT_STATE_LOADING:
                     transitionTo(mLoadingState);
                     deferMessage(msg);
                     return true;
+                default: {
+                    if (isStrictMode) {
+                        return super.processMessage(msg);
+                    } else {
+                        return false;
+                    }
+                }
             }
-            return super.processMessage(msg);
         }
     }
 
     private class LoadingState extends BaseState {
         @Override
         public void enter() {
-            Log.d(TAG, "LoadingState enter: ");
+            Log.d(TAG, emptyCategory + " LoadingState enter: ");
             super.enter();
             loadStateObserver.postValue(LoadStateCategory.LOADING);
         }
 
         @Override
         public void exit() {
-            Log.d(TAG, "LoadingState exit: ");
+            Log.d(TAG, emptyCategory + " LoadingState exit: ");
             super.exit();
             mLoadStateViewWrapperInternal.hideListStateView();
         }
 
         @Override
         public boolean processMessage(Message msg) {
-            Log.d(TAG, "LoadingState .processMessage:  msg= " + dumpMessage(msg));
+            Log.d(TAG, emptyCategory + " LoadingState .processMessage:  msg= " + dumpMessage(msg));
             switch (msg.what) {
                 case EVENT_STATE_LOADED_SUCCESS: {
                     int loadedDataCount = msg.arg1;
@@ -315,43 +357,49 @@ class LoadStateMachine extends StateMachine {
                 case EVENT_STATE_LOADING:
                     try {
                         boolean isShowLoading = (boolean) msg.obj;
-                        if(isShowLoading){
+                        if (isShowLoading) {
                             mLoadStateViewWrapperInternal.showLoadingView();
                         }
-                    }catch (Exception e){
-                        Log.e(TAG, "LoadingState processMessage: ",e );
-
+                    } catch (Exception e) {
+                        Log.e(TAG, emptyCategory + " LoadingState processMessage: ", e);
                     }
                     return true;
+
+                default: {
+                    if (!isStrictMode) {
+                        return super.processMessage(msg);
+                    } else {
+                        return false;
+                    }
+                }
             }
-            return super.processMessage(msg);
         }
     }
 
     private class LoadState extends BaseState {
         @Override
         public void enter() {
-            Log.d(TAG, "LoadStateCategory enter: ");
+            Log.d(TAG, emptyCategory + " LoadState enter: ");
             super.enter();
         }
 
         @Override
         public void exit() {
-            Log.d(TAG, "LoadStateCategory exit: ");
+            Log.d(TAG, emptyCategory + " LoadState exit: ");
             super.exit();
         }
 
         @Override
         public boolean processMessage(Message msg) {
-            Log.d(TAG, "LoadStateCategory processMessage: msg=" + dumpMessage(msg));
-            return super.processMessage(msg);
+            Log.d(TAG, emptyCategory + " LoadState processMessage: msg=" + dumpMessage(msg));
+            return false;//super.processMessage(msg);
         }
     }
 
     private class IdleState extends BaseState {
         @Override
         public void enter() {
-            Log.d(TAG, "IdleState enter: ");
+            Log.d(TAG, emptyCategory + " IdleState enter: ");
             super.enter();
             mLoadStateViewWrapperInternal.hideListStateView();
             loadStateObserver.postValue(LoadStateCategory.IDLE);
@@ -359,13 +407,13 @@ class LoadStateMachine extends StateMachine {
 
         @Override
         public void exit() {
-            Log.d(TAG, "IdleState exit: ");
+            Log.d(TAG, emptyCategory + " IdleState exit: ");
             super.exit();
         }
 
         @Override
         public boolean processMessage(Message msg) {
-            Log.d(TAG, "IdleState processMessage: msg=" + dumpMessage(msg));
+            Log.d(TAG, emptyCategory + " IdleState processMessage: msg=" + dumpMessage(msg));
             switch (msg.what) {
                 case EVENT_STATE_IDLE:
                     return true;
@@ -373,16 +421,25 @@ class LoadStateMachine extends StateMachine {
                     transitionTo(mLoadingState);
                     deferMessage(msg);
                     return true;
+
+                default: {
+                    if (!isStrictMode) {
+                        return super.processMessage(msg);
+                    } else {
+                        return false;
+                    }
+                }
             }
-            return super.processMessage(msg);
         }
     }
 
     private class StartupState extends BaseState {
+        boolean loadConfigSuccess = false;
+
         @SuppressLint("CheckResult")
         @Override
         public void enter() {
-            Log.d(TAG, "StartupState enter: ");
+            Log.d(TAG, emptyCategory + " StartupState enter: ");
             super.enter();
             loadStateObserver.postValue(LoadStateCategory.STARTUP);
             Flowable.just("").observeOn(Schedulers.io()).map(new Function<String, Boolean>() {
@@ -393,6 +450,7 @@ class LoadStateMachine extends StateMachine {
             }).observeOn(AndroidSchedulers.mainThread()).subscribe(new Consumer<Boolean>() {
                 @Override
                 public void accept(Boolean isLoadSuccess) throws Exception {
+                    loadConfigSuccess = isLoadSuccess;
                     if (isLoadSuccess) {
                         sendMessage(EVENT_STATE_IDLE);
                     }
@@ -400,23 +458,27 @@ class LoadStateMachine extends StateMachine {
             }, new Consumer<Throwable>() {
                 @Override
                 public void accept(Throwable throwable) throws Exception {
-                    Log.e(TAG, "StartupState accept: ", throwable);
+                    Log.e(TAG, emptyCategory + " StartupState accept: ", throwable);
                 }
             });
         }
 
         @Override
         public void exit() {
-            Log.d(TAG, "StartupState exit: ");
+            Log.d(TAG, emptyCategory + " StartupState exit: ");
             super.exit();
         }
 
         @Override
         public boolean processMessage(Message msg) {
-            Log.d(TAG, "StartupState processMessage: msg=" + dumpMessage(msg));
+            Log.d(TAG, emptyCategory + " StartupState processMessage: msg=" + dumpMessage(msg));
             switch (msg.what) {
                 case EVENT_STATE_IDLE:
-                    transitionTo(mIdleState);
+                    if (loadConfigSuccess) {
+                        transitionTo(mIdleState);
+                    } else {
+                        deferMessage(msg);
+                    }
                     return true;
                 case EVENT_STATE_LOADING:
                 case EVENT_STATE_LOADED_SUCCESS:
@@ -426,29 +488,31 @@ class LoadStateMachine extends StateMachine {
                 case EVENT_SHOW_LOADED_FAIL:
                     deferMessage(msg);
                     return true;
+                default:
+                    return false;
             }
-            return super.processMessage(msg);
         }
     }
 
     private class DefaultState extends BaseState {
         @Override
         public void enter() {
-            Log.d(TAG, "DefaultState enter: ");
+            Log.d(TAG, emptyCategory + " DefaultState enter: ");
             super.enter();
         }
 
         @Override
         public void exit() {
-            Log.d(TAG, "DefaultState exit: ");
+            Log.d(TAG, emptyCategory + " DefaultState exit: ");
             super.exit();
         }
 
         @Override
         public boolean processMessage(Message msg) {
 
-            Log.d(TAG, "DefaultState processMessage: unhandle msg=" + dumpMessage(msg));
-            return super.processMessage(msg);
+            Log.d(TAG,
+                emptyCategory + " DefaultState processMessage: unhandle msg=" + dumpMessage(msg));
+            return false;//super.processMessage(msg);
         }
     }
 
@@ -463,7 +527,45 @@ class LoadStateMachine extends StateMachine {
 
         @Override
         public boolean processMessage(Message msg) {
-            return super.processMessage(msg);
+            if (isStrictMode) {
+                return false;
+            }
+
+            switch (msg.what) {
+                case EVENT_STATE_IDLE:
+                    transitionTo(mIdleState);
+                    return true;
+                case EVENT_STATE_LOADING:
+                    transitionTo(mLoadingState);
+                    deferMessage(msg);
+                    return true;
+
+                case EVENT_STATE_LOADED_FAIL: {
+                    transitionTo(mLoadedFailState);
+                    Message message = Message.obtain(msg);
+                    message.what = EVENT_SHOW_LOADED_FAIL;
+                    sendMessage(message);
+                    return true;
+                }
+                case EVENT_STATE_LOADED_EMPTY:
+                    transitionTo(mLoadedEmptyState);
+                    return true;
+                case EVENT_STATE_UPDATE_EMPTY:
+                case EVENT_STATE_LOADED_SUCCESS: {
+                    int loadedDataCount = msg.arg1;
+                    if (loadedDataCount > 0) {
+                        transitionTo(mLoadedSuccessState);
+                    } else {
+                        transitionTo(mLoadedEmptyState);
+                    }
+                    return true;
+                }
+
+                default:
+                    return false;
+
+            }
         }
     }
 }
+

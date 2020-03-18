@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -24,6 +25,16 @@ public class LoadStateView extends FrameLayout {
     LoadedFailViewHolder loadedFailViewHolder;
     EmptyViewAttrEntity currentEmptyViewAttr;
     LoadedFailViewAttrEntity currentLoadedFailEntity;
+    CurrentViewType currentViewType = CurrentViewType.NONE;
+    ViewTreeObserver.OnPreDrawListener preDrawListener = new ViewTreeObserver.OnPreDrawListener() {
+        @Override
+        public boolean onPreDraw() {
+            if (currentViewType != CurrentViewType.NONE && getVisibility() == VISIBLE) {
+                updateLoadStateView();
+            }
+            return true;
+        }
+    };
 
     public LoadStateView(Context context) {
         super(context);
@@ -45,33 +56,41 @@ public class LoadStateView extends FrameLayout {
         loadingViewHolder = new LoadingViewHolder();
         emptyViewHolder = new EmptyViewHolder();
         loadedFailViewHolder = new LoadedFailViewHolder();
-        addOnLayoutChangeListener(new View.OnLayoutChangeListener(){
-            @Override
-            public void onLayoutChange(View v,
-                                       int left,
-                                       int top,
-                                       int right,
-                                       int bottom,
-                                       int oldLeft,
-                                       int oldTop,
-                                       int oldRight,
-                                       int oldBottom) {
-                if (emptyViewHolder.getRootView().getVisibility() == VISIBLE) {
-                    showAndAdjustLayoutPosition(emptyViewHolder);
-                }
-                if (loadedFailViewHolder.getRootView().getVisibility() == VISIBLE) {
-                    showAndAdjustLayoutPosition(loadedFailViewHolder);
-                }
-                if (loadingViewHolder.getRootView().getVisibility() == VISIBLE) {
-                    showAndAdjustLayoutPosition(loadingViewHolder);
-                }
+        getViewTreeObserver().addOnPreDrawListener(preDrawListener);
+    }
 
-            }
-        });
+    private void updateLoadStateView() {
+        switch (currentViewType) {
+            case NONE:
+                break;
+            case EMPTY:
+                showEmptyView(currentEmptyViewAttr);
+                break;
+            case LOADED_FAIL:
+                showLoadedFailView(currentLoadedFailEntity);
+                break;
+            case LOADING:
+                showLoadingView();
+                break;
+        }
+    }
 
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (visibility == INVISIBLE || visibility == GONE) {
+            currentViewType = CurrentViewType.NONE;
+            loadingViewHolder.hideLoading();
+            loadedFailViewHolder.hideLoadedFailView();
+            emptyViewHolder.hideEmptyView();
+        }
     }
 
     private void showAndAdjustLayoutPosition(IViewHolder holder) {
+        if (holder == null) {
+            return;
+        }
+
         if (getVisibility() == VISIBLE) {
             Rect rect = new Rect();
             if (getGlobalVisibleRect(rect) && rect.height() > 0) {
@@ -79,21 +98,19 @@ public class LoadStateView extends FrameLayout {
                     View view = holder.getRootView();
                     int viewMeasuredHeight = view.getMeasuredHeight();
                     int marginTop = (rect.height() - viewMeasuredHeight) / 2;
-                    if (marginTop > 0 && marginTop != holder.getCurrentMarginTop()) {
+                    if (marginTop > 0 && Math.abs(marginTop - holder.getCurrentMarginTop()) > 5) {
                         holder.setCurrentMarginTop(marginTop);
-                        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) view.getLayoutParams();
+                        LayoutParams params = (LayoutParams) view.getLayoutParams();
                         params.setMargins(0, marginTop, 0, 0);
                         view.setLayoutParams(params);
                     }
-                    view.setVisibility(VISIBLE);
+                    if (view.getVisibility() != VISIBLE) {
+                        view.setVisibility(VISIBLE);
+                    }
                 } catch (Exception e) {
                     Log.e(TAG, "showAndAdjustLayoutPosition: ", e);
                 }
-            } else {
-                Log.w(TAG, "showAndAdjustLayoutPosition: get LoadStateView height fail,show state view fail !!");
             }
-        } else {
-            Log.w(TAG, "showAndAdjustLayoutPosition: LoadStateView is not visible,show state view fail !!");
         }
     }
 
@@ -139,44 +156,41 @@ public class LoadStateView extends FrameLayout {
         loadedFailViewHolder.loadedFailViewRoot.setOnClickListener(null);
     }
 
-    void showLoadedFailView(final LoadedFailViewAttrEntity attr) {
+    void showLoadedFailView(LoadedFailViewAttrEntity attr) {
         if (attr == null) {
             Log.w(TAG, "ListStateView.java.showLoadedFailView: 46 attr is null");
             return;
         }
+        currentViewType = CurrentViewType.LOADED_FAIL;
+        currentLoadedFailEntity = attr;
         setVisibility(VISIBLE);
         loadingViewHolder.hideLoading();
         emptyViewHolder.hideEmptyView();
-        post(new Runnable() {
-            @Override
-            public void run() {
-                loadedFailViewHolder.showLoadedFailView(attr);
-            }
-        });
+        loadedFailViewHolder.showLoadedFailView(attr);
     }
 
     void showLoadingView() {
+        currentViewType = CurrentViewType.LOADING;
         setVisibility(VISIBLE);
         emptyViewHolder.hideEmptyView();
         loadedFailViewHolder.hideLoadedFailView();
-        post(new Runnable() {
-            @Override
-            public void run() {
-                loadingViewHolder.showLoading();
-            }
-        });
+        loadingViewHolder.showLoading();
     }
 
-    void showEmptyView(final EmptyViewAttrEntity attr) {
+    void showEmptyView(EmptyViewAttrEntity attr) {
+        if (attr == null) {
+            Log.w(TAG, "ListStateView.java.showEmptyView: currentEmptyViewAttr="
+                + currentEmptyViewAttr
+                + " attr="
+                + attr);
+            return;
+        }
+        currentViewType = CurrentViewType.EMPTY;
+        currentEmptyViewAttr = attr;
         setVisibility(VISIBLE);
         loadingViewHolder.hideLoading();
         loadedFailViewHolder.hideLoadedFailView();
-        post(new Runnable() {
-            @Override
-            public void run() {
-                emptyViewHolder.showEmptyView(attr);
-            }
-        });
+        emptyViewHolder.showEmptyView(attr);
     }
 
     public interface EmptyStateHandler {
@@ -303,11 +317,10 @@ public class LoadStateView extends FrameLayout {
         }
     }
 
-    private class LoadingViewHolder implements IViewHolder{
-        LinearLayout loadingViewRoot;
+    private class LoadingViewHolder implements IViewHolder {
+        RelativeLayout loadingViewRoot;
         BearLottieView loadingLottieView;
         int currentMarginTop;
-
 
         private LoadingViewHolder() {
             init();
@@ -325,12 +338,12 @@ public class LoadStateView extends FrameLayout {
 
         @Override
         public void setCurrentMarginTop(int value) {
-            currentMarginTop=value;
+            currentMarginTop = value;
         }
 
         private void showLoading() {
             showAndAdjustLayoutPosition(this);
-            if (loadingLottieView != null) {
+            if (loadingLottieView != null && !loadingLottieView.isAnimating()) {
                 loadingLottieView.playAnimation();
             }
         }
@@ -343,13 +356,13 @@ public class LoadStateView extends FrameLayout {
         private void hideLoading() {
             currentMarginTop = 0;
             loadingViewRoot.setVisibility(GONE);
-            if (loadingLottieView != null) {
+            if (loadingLottieView != null && loadingLottieView.isAnimating()) {
                 loadingLottieView.cancelAnimation();
             }
         }
     }
 
-    private class EmptyViewHolder implements IViewHolder{
+    private class EmptyViewHolder implements IViewHolder {
         LinearLayout emptyViewRoot;
         ImageView imageIcon;
         TextView masterTip;
@@ -372,42 +385,69 @@ public class LoadStateView extends FrameLayout {
         }
 
         private void setEmptyViewAttr(EmptyViewAttrEntity attr) {
-            if (attr == null || currentEmptyViewAttr == attr) {
+            if (attr == null) {
                 Log.w(TAG, "ListStateView.java.setEmptyViewAttr: currentEmptyViewAttr="
                     + currentEmptyViewAttr
                     + " attr="
                     + attr);
                 return;
             }
-            currentEmptyViewAttr = attr;
 
             Resources resources = getResources();
-            imageIcon.setImageResource(
-                resources.getIdentifier(attr.imageRes, "drawable", getContext().getPackageName()));
+            try {
+                imageIcon.setImageResource(resources.getIdentifier(attr.imageRes, "drawable",
+                    getContext().getPackageName()));
+            }catch (Exception e){
+                Log.e(TAG, "setEmptyViewAttr: attr.imageRes="+attr.imageRes );
+            }
             if (!TextUtils.isEmpty(attr.masterTip)) {
                 masterTip.setVisibility(VISIBLE);
-                masterTip.setText(resources.getIdentifier(attr.masterTip, "string", getContext().getPackageName()));
+                try {
+                    masterTip.setText(resources.getIdentifier(attr.masterTip, "string",
+                        getContext().getPackageName()));
+                } catch (Exception e) {
+                    Log.e(TAG,
+                        "setEmptyViewAttr: fetch resource fail:attr.masterTip=" + attr.masterTip);
+                }
             } else {
                 masterTip.setVisibility(GONE);
             }
 
             if (!TextUtils.isEmpty(attr.slaveTip)) {
                 slaveTip.setVisibility(VISIBLE);
-                slaveTip.setText(resources.getIdentifier(attr.slaveTip, "string", getContext().getPackageName()));
+                try {
+                    slaveTip.setText(resources.getIdentifier(attr.slaveTip, "string",
+                        getContext().getPackageName()));
+                } catch (Exception e) {
+                    Log.e(TAG,
+                        "setEmptyViewAttr: fetch resource fail: attr.slaveTip=" + attr.slaveTip);
+                }
             } else {
                 slaveTip.setVisibility(GONE);
             }
 
             if (!TextUtils.isEmpty(attr.masterBtnName)) {
                 masterBtn.setVisibility(VISIBLE);
-                masterBtn.setText(resources.getIdentifier(attr.masterBtnName, "string", getContext().getPackageName()));
+                try {
+                    masterBtn.setText(resources.getIdentifier(attr.masterBtnName, "string",
+                        getContext().getPackageName()));
+                } catch (Exception e) {
+                    Log.e(TAG, "setEmptyViewAttr: fetch resource fail:  attr.masterBtnName="
+                        + attr.masterBtnName);
+                }
             } else {
                 masterBtn.setVisibility(GONE);
             }
 
             if (!TextUtils.isEmpty(attr.slaveBtnName)) {
                 slaveBtn.setVisibility(VISIBLE);
-                slaveBtn.setText(resources.getIdentifier(attr.slaveBtnName, "string", getContext().getPackageName()));
+                try {
+                    slaveBtn.setText(resources.getIdentifier(attr.slaveBtnName, "string",
+                        getContext().getPackageName()));
+                } catch (Exception e) {
+                    Log.e(TAG, "setEmptyViewAttr: fetch resource fail: attr.slaveBtnName="
+                        + attr.slaveBtnName);
+                }
             } else {
                 slaveBtn.setVisibility(GONE);
             }
@@ -420,7 +460,7 @@ public class LoadStateView extends FrameLayout {
 
         @Override
         public void setCurrentMarginTop(int value) {
-            currentMarginTop=value;
+            currentMarginTop = value;
         }
 
         @Override
@@ -439,7 +479,7 @@ public class LoadStateView extends FrameLayout {
         }
     }
 
-    private class LoadedFailViewHolder implements IViewHolder{
+    private class LoadedFailViewHolder implements IViewHolder {
         LinearLayout loadedFailViewRoot;
         ImageView imageIcon;
         TextView masterTip;
@@ -462,41 +502,68 @@ public class LoadStateView extends FrameLayout {
         }
 
         private void setLoadedFailViewAttr(LoadedFailViewAttrEntity attr) {
-            if (attr == null || currentLoadedFailEntity == attr) {
+            if (attr == null) {
                 Log.w(TAG, "ListStateView.java.setLoadedFailViewAttr: attr="
                     + attr
                     + " currentLoadedFailEntity="
                     + currentLoadedFailEntity);
                 return;
             }
-            currentLoadedFailEntity = attr;
             Resources resources = getResources();
-            imageIcon.setImageResource(
-                resources.getIdentifier(attr.imageRes, "drawable", getContext().getPackageName()));
+            try {
+                imageIcon.setImageResource(resources.getIdentifier(attr.imageRes, "drawable",
+                    getContext().getPackageName()));
+            }catch (Exception e){
+                Log.e(TAG, "setLoadedFailViewAttr: attr.imageRes="+attr.imageRes );
+            }
             if (!TextUtils.isEmpty(attr.masterTip)) {
                 masterTip.setVisibility(VISIBLE);
-                masterTip.setText(resources.getIdentifier(attr.masterTip, "string", getContext().getPackageName()));
+                try {
+                    masterTip.setText(resources.getIdentifier(attr.masterTip, "string",
+                        getContext().getPackageName()));
+                } catch (Exception e) {
+                    Log.e(TAG, "setLoadedFailViewAttr: fetch resource fail:attr.masterTip="
+                        + attr.masterTip);
+                }
             } else {
                 masterTip.setVisibility(GONE);
             }
 
             if (!TextUtils.isEmpty(attr.slaveTip)) {
                 slaveTip.setVisibility(VISIBLE);
-                slaveTip.setText(resources.getIdentifier(attr.slaveTip, "string", getContext().getPackageName()));
+                try {
+                    slaveTip.setText(resources.getIdentifier(attr.slaveTip, "string",
+                        getContext().getPackageName()));
+                } catch (Exception e) {
+                    Log.e(TAG, "setLoadedFailViewAttr: fetch resource fail: attr.slaveTip="
+                        + attr.slaveTip);
+                }
             } else {
                 slaveTip.setVisibility(GONE);
             }
 
             if (!TextUtils.isEmpty(attr.masterBtnName)) {
                 masterBtn.setVisibility(VISIBLE);
-                masterBtn.setText(resources.getIdentifier(attr.masterBtnName, "string", getContext().getPackageName()));
+                try {
+                    masterBtn.setText(resources.getIdentifier(attr.masterBtnName, "string",
+                        getContext().getPackageName()));
+                } catch (Exception e) {
+                    Log.e(TAG, "setLoadedFailViewAttr: fetch resource fail:  attr.masterBtnName="
+                        + attr.masterBtnName);
+                }
             } else {
                 masterBtn.setVisibility(GONE);
             }
 
             if (!TextUtils.isEmpty(attr.slaveBtnName)) {
                 slaveBtn.setVisibility(VISIBLE);
-                slaveBtn.setText(resources.getIdentifier(attr.slaveBtnName, "string", getContext().getPackageName()));
+                try {
+                    slaveBtn.setText(resources.getIdentifier(attr.slaveBtnName, "string",
+                        getContext().getPackageName()));
+                } catch (Exception e) {
+                    Log.e(TAG, "setLoadedFailViewAttr: fetch resource fail: attr.slaveBtnName="
+                        + attr.slaveBtnName);
+                }
             } else {
                 slaveBtn.setVisibility(GONE);
             }
@@ -509,7 +576,7 @@ public class LoadStateView extends FrameLayout {
 
         @Override
         public void setCurrentMarginTop(int value) {
-            currentMarginTop=value;
+            currentMarginTop = value;
         }
 
         @Override
@@ -528,10 +595,15 @@ public class LoadStateView extends FrameLayout {
         }
     }
 
-    private interface IViewHolder{
+    private interface IViewHolder {
         int getCurrentMarginTop();
+
         void setCurrentMarginTop(int value);
+
         View getRootView();
     }
 
+    private enum CurrentViewType {
+        NONE, LOADING, LOADED_FAIL, EMPTY
+    }
 }

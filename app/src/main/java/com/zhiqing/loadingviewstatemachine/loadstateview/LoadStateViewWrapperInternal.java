@@ -28,12 +28,18 @@ class LoadStateViewWrapperInternal {
         mLoadStateView.showLoadingView();
     }
 
-    void showEmptyView() throws RuntimeException {
+    void showEmptyView() {
         if (mEmptyCategory != null) {
-            mLoadStateView.showEmptyView(
-                mEmptyViewAttrMap.get(mEmptyCategory.getmCategoryName()).get(mEmptyCategory.getMode().getModeName()));
+            try {
+                mLoadStateView.showEmptyView(
+                    mEmptyViewAttrMap.get(mEmptyCategory.getmCategoryName())
+                    .get(mEmptyCategory.getMode().getModeName()));
+            }catch (Exception e){
+                Log.w(TAG, "showEmptyView: You should init LoadStateView first.",e);
+
+            }
         } else {
-            throw new RuntimeException("You should call setEmptyCategory first. ");
+            Log.w( TAG,new RuntimeException("You should init LoadStateView first. "));
         }
     }
 
@@ -43,8 +49,12 @@ class LoadStateViewWrapperInternal {
 
     void showEmptyView(EmptyCategory category) {
         mEmptyCategory = category;
-        mLoadStateView.showEmptyView(
-            mEmptyViewAttrMap.get(category.getmCategoryName()).get(mEmptyCategory.getMode().getModeName()));
+        try {
+            mLoadStateView.showEmptyView(mEmptyViewAttrMap.get(category.getmCategoryName())
+                .get(mEmptyCategory.getMode().getModeName()));
+        }catch (Exception e){
+            Log.w(TAG, "showEmptyView: You should init LoadStateView first.",e);
+        }
     }
 
     void hideListStateView() {
@@ -52,7 +62,11 @@ class LoadStateViewWrapperInternal {
     }
 
     void showLoadedFailView(LoadFailCategory category) {
-        mLoadStateView.showLoadedFailView(mLoadedFailViewAttrMap.get(category.getmCategoryName()));
+        try {
+            mLoadStateView.showLoadedFailView(mLoadedFailViewAttrMap.get(category.getmCategoryName()));
+        }catch (Exception e){
+            Log.w(TAG, "showLoadedFailView: You should init LoadStateView first.",e );
+        }
     }
 
     void registerEmptyStateClickHandler(LoadStateView.EmptyStateHandler handler) {
@@ -100,7 +114,8 @@ class LoadStateViewWrapperInternal {
                         emptyViewAttrEntity.setMasterBtnName(configData[4].trim());
                         emptyViewAttrEntity.setSlaveBtnName(configData[5].trim());
                         if (mEmptyViewAttrMap.get(emptyCategoryName) == null) {
-                            HashMap<String, LoadStateView.EmptyViewAttrEntity> infoList = new HashMap<>();
+                            HashMap<String, LoadStateView.EmptyViewAttrEntity>
+                                infoList = new HashMap<>();
                             infoList.put(configData[0].trim(), emptyViewAttrEntity);
                             mEmptyViewAttrMap.put(emptyCategoryName, infoList);
                         } else {

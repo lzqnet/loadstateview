@@ -14,7 +14,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:background="@color/lkui_B300"
             android:onClick="showLoadingView"
             android:padding="5dp"
@@ -27,7 +27,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="@color/lkui_B300"
@@ -38,7 +38,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:padding="5dp"
@@ -57,7 +57,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:background="@color/lkui_B300"
             android:onClick="loadedFailNoNetwork"
             android:text="loading失败 无网"
@@ -70,7 +70,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="@color/lkui_B300"
@@ -81,7 +81,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:background="@color/lkui_B300"
@@ -94,7 +94,7 @@
 
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="35dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@color/lkui_Y500"
 
@@ -102,7 +102,7 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="35dp"
+            android:layout_height="wrap_content"
             android:background="@color/lkui_B300"
             android:onClick="updateEmptyViewNoData"
             android:text="更新空状态，无数据"

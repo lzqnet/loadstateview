@@ -3,19 +3,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_state_empty_root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_horizontal"
     android:gravity="center"
     android:orientation="vertical"
-    android:visibility="gone">
+
+    android:visibility="invisible">
 
     <ImageView
         android:id="@+id/list_state_empty_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        tools:src="@drawable/load_state_empty_normal"
-        />
+        tools:src="@drawable/load_state_empty_normal" />
 
     <TextView
         android:id="@+id/list_state_empty_master_tip"
@@ -26,7 +27,7 @@
         android:gravity="center"
         android:textColor="@color/space_kit_n900"
         android:textSize="16sp"
-        tools:text="@string/Doc_List_EmptyDocumentTips"/>
+        tools:text="@string/Doc_Facade_OfflineEmptyAvailableFile" />
 
     <TextView
         android:id="@+id/list_state_empty_slave_tip"
@@ -37,18 +38,20 @@
         android:gravity="center"
         android:textColor="@color/space_kit_n600"
         android:textSize="14sp"
-        tools:text="@string/Doc_List_EmptyDocumentTips"/>
+        tools:text="@string/Doc_Facade_EmptyDocumentTips" />
+
     <Button
         android:id="@+id/list_state_empty_master_btn"
-        style="@style/SpaceKitBtn2Level1"
         android:layout_width="@dimen/space_kit_len_180"
         android:layout_marginTop="@dimen/space_kit_len_20"
-        tools:text="@string/Doc_List_CreateDocument"/>
+        tools:text="@string/Doc_Facade_CreateDocument"
+        style="@style/SpaceKitBtn2Level1" />
+
     <Button
         android:id="@+id/list_state_empty_slave_btn"
-        style="@style/SpaceKitBtn2Level2"
         android:layout_width="@dimen/space_kit_len_180"
         android:layout_marginTop="@dimen/space_kit_len_12"
-        tools:text="@string/Doc_List_CreateDocument"/>
+        tools:text="@string/Doc_Facade_FilterEmptyDocTips"
+        style="@style/SpaceKitBtn2Level2" />
 
 </LinearLayout>

@@ -2,9 +2,12 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone">
+    android:background="@color/space_kit_white"
+    android:visibility="invisible">
 
     <include layout="@layout/load_state_loading_layout" />
+
     <include layout="@layout/load_state_empty_layout" />
-    <include layout="@layout/load_state_loaded_fail_layout"/>
+
+    <include layout="@layout/load_state_loaded_fail_layout" />
 </merge>

@@ -8,6 +8,8 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import com.zhiqing.loadingviewstatemachine.connection.NetworkCheck;
+import com.zhiqing.loadingviewstatemachine.connection.NetworkType;
 import java.net.SocketTimeoutException;
 
 public class LoadStateViewDispatcher {
@@ -33,6 +35,12 @@ public class LoadStateViewDispatcher {
         stateMachine.start();
     }
 
+    public void init(boolean isStrictMode){
+        init();
+        stateMachine.enableStrictMode(isStrictMode);
+
+    }
+
     public void setEmptyCategory(EmptyCategory category) {
         Log.d(TAG, "LoadStateViewDispatcher.setEmptyCategory: category=" + category.toString());
         stateMachine.setEmptyCategory(category);
@@ -48,8 +56,8 @@ public class LoadStateViewDispatcher {
     }
 
     public void hideStateView() {
-        Log.d(TAG, "LoadStateViewDispatcher.hideStateView: ");
-        stateMachine.hideStateView();
+        Log.d(TAG, "LoadStateViewDispatcher.resetStateView: ");
+        stateMachine.resetStateView();
     }
 
     public void updateEmptyView(int dataCount) {
@@ -77,24 +85,24 @@ public class LoadStateViewDispatcher {
         stateMachine.loadedFail(category);
     }
 
-    //public void loadedFail(Throwable throwable) {
-    //    Log.d(TAG, "LoadStateViewDispatcher.java.loadedFail: throwable= " + throwable.getMessage());
-    //    if (NetworkCheck.getNetworkState(mContext) == NetworkType.NETWORK_NO) {
-    //        loadedFail(LoadFailCategory.CATEGORY_NO_NETWORK);
-    //    } else if (isTimeout(throwable)) {
-    //        loadedFail(LoadFailCategory.CATEGORY_OVERTIME);
-    //    } else {
-    //        loadedFail(LoadFailCategory.CATEGORY_UN_KNOW);
-    //    }
-    //}
+    public void loadedFail(Throwable throwable) {
+        Log.d(TAG, "LoadStateViewDispatcher.java.loadedFail: throwable= " + throwable.getMessage());
+        if (NetworkCheck.getNetworkState(mContext) == NetworkType.NETWORK_NO) {
+            loadedFail(LoadFailCategory.CATEGORY_NO_NETWORK);
+        } else if (isTimeout(throwable)) {
+            loadedFail(LoadFailCategory.CATEGORY_OVERTIME);
+        } else {
+            loadedFail(LoadFailCategory.CATEGORY_UN_KNOW);
+        }
+    }
 
-    //private boolean isTimeout(Throwable throwable) {
-    //    if (throwable instanceof CloudReqFun.OkHttpReqException) {
-    //        CloudReqFun.OkHttpReqException exception = (CloudReqFun.OkHttpReqException) throwable;
-    //        return exception.exception.equals(SocketTimeoutException.class.getName());
-    //    }
-    //    return throwable instanceof SocketTimeoutException;
-    //}
+    private boolean isTimeout(Throwable throwable) {
+        //if (throwable instanceof CloudReqFun.OkHttpReqException) {
+        //    CloudReqFun.OkHttpReqException exception = (CloudReqFun.OkHttpReqException) throwable;
+        //    return exception.exception.equals(SocketTimeoutException.class.getName());
+        //}
+        return throwable instanceof SocketTimeoutException;
+    }
 
     public void registerEmptyStateClickHandler(LoadStateView.EmptyStateHandler handler) {
         stateMachine.registerEmptyStateClickHandler(handler);
